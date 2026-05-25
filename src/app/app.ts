@@ -1,11 +1,13 @@
 import { Component, signal } from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  standalone: false,
-  styleUrl: './app.scss'
+  standalone: true,
+  styleUrl: './app.scss',
+  imports: [RouterOutlet]
 })
-export class App {
+export class AppComponent {
   protected readonly title = signal('agri-flow');
 }
