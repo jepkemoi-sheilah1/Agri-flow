@@ -10,8 +10,10 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
-          "standalone": false
+          "styles": [
+                    "src/styles.scss"
+          ],
+                    "standalone": false
         },
         "@schematics/angular:directive": {
           "standalone": false
