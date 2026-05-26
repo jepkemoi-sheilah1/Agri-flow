@@ -10,4 +10,5 @@ export interface Kyc {
     rejectionReason?: string; // reason for rejection if status is REJECTED
     submittedAt: Date;
 }
+
    
