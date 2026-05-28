@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule,MatIconModule , RouterLink, MatProgressSpinnerModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -59,14 +60,12 @@ export class LoginComponent implements OnInit {
       const roles: string[] = response.data.user.roles || [];
 
       if (roles.includes('SUPER_ADMIN')) {
-        this.router.navigate(['/super-admin']);
-      } else if (roles.includes('ADMIN')) {
-        this.router.navigate(['/admin']);
-      } else if (roles.includes('SELLER')) {
-        this.router.navigate(['/seller']);
-      } else {
-        this.router.navigate(['/buyer']);
-      }
+    this.router.navigate(['/super-admin']);
+} else if (roles.includes('ADMIN')) {
+    this.router.navigate(['/admin']);
+} else {
+    this.router.navigate(['/buyer']);
+}
 
       // 7. Stop loading
       this.isLoading = false;

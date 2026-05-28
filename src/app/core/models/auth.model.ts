@@ -21,6 +21,6 @@ export interface  RegisterRequest {
     email: string;
     password: string;
     phoneNumber: string;
-    role: Role; // e.g. ['BUYER', 'SELLER']
+    role: 'FARMER'; // e.g. ['BUYER', 'SELLER']
     
 }

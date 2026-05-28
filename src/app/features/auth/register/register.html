@@ -1,0 +1,128 @@
+<div class="register-page">
+  <div class="register-card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <mat-icon>eco</mat-icon>
+      </div>
+      <span class="brand-name">AgriFlow</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="register-heading">
+      <h2>Create an account</h2>
+      <p>Join thousands of farmers on AgriFlow</p>
+    </div>
+
+    <!-- Error message -->
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name row -->
+      <div class="two-col">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>First name</mat-label>
+          <input matInput formControlName="firstName" placeholder="Juma" />
+          @if (f['firstName'].invalid && f['firstName'].touched) {
+            <mat-error>First name is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Surname</mat-label>
+          <input matInput formControlName="surname" placeholder="Maina" />
+          @if (f['surname'].invalid && f['surname'].touched) {
+            <mat-error>Surname is required</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Username -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="userName" placeholder="juma_farmer" />
+        <mat-icon matSuffix>person_outline</mat-icon>
+        @if (f['userName'].invalid && f['userName'].touched) {
+          <mat-error>Username is required</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email address</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="farmer@example.com" />
+        <mat-icon matSuffix>mail_outline</mat-icon>
+        @if (f['email'].invalid && f['email'].touched) {
+          <mat-error>Please enter a valid email</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Phone -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Phone number</mat-label>
+        <input matInput formControlName="phoneNumber" placeholder="0700045567" />
+        <mat-icon matSuffix>phone_outline</mat-icon>
+        @if (f['phoneNumber'].invalid && f['phoneNumber'].touched) {
+          <mat-error>Enter a valid 10-digit phone number</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password" />
+        <button mat-icon-button matSuffix type="button" (click)="toggleShowPassword()">
+          <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (f['password'].invalid && f['password'].touched) {
+          <mat-error>Password must be at least 8 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Confirm Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Confirm password</mat-label>
+        <input matInput
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          formControlName="confirmPassword" />
+        <button mat-icon-button matSuffix type="button" (click)="toggleShowConfirmPassword()">
+          <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (registerForm.errors?.['passwordMismatch'] && f['confirmPassword'].touched) {
+          <mat-error>Passwords do not match</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Submit button -->
+      <button
+        mat-flat-button
+        type="submit"
+        class="submit-btn"
+        [disabled]="isLoading || registerForm.invalid">
+        @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Create account
+        }
+      </button>
+
+    </form>
+
+    <!-- Login link -->
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/login">Sign in here</a>
+    </p>
+
+  </div>
+</div>
