@@ -1,0 +1,73 @@
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <mat-icon>eco</mat-icon>
+      </div>
+      <span class="brand-name">AgriFlow</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="login-heading">
+      <h2>Welcome back</h2>
+      <p>Sign in to your account</p>
+    </div>
+
+    <!-- Error message -->
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email address</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="farmer@example.com" />
+        <mat-icon matSuffix>mail_outline</mat-icon>
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <mat-error>Please enter a valid email</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
+          <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <mat-error>Password must be at least 8 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Submit button -->
+      <button
+        mat-flat-button
+        type="submit"
+        class="submit-btn"
+        [disabled]="isLoading || loginForm.invalid">
+        @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Sign in
+        }
+      </button>
+
+    </form>
+
+    <!-- Register link -->
+    <p class="register-link">
+      Don't have an account?
+      <a routerLink="/register">Register here</a>
+    </p>
+
+  </div>
+</div>

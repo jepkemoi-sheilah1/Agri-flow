@@ -10,16 +10,13 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "styles": [
-                    "src/styles.scss"
-          ],
-                    "standalone": false
+          "standalone": true
         },
         "@schematics/angular:directive": {
-          "standalone": false
+          "standalone": true
         },
         "@schematics/angular:pipe": {
-          "standalone": false
+          "standalone": true
         }
       },
       "root": "",
@@ -39,6 +36,7 @@
               }
             ],
             "styles": [
+              "node_modules/tailwindcss/index.css",
               "src/styles.scss"
             ]
           },
