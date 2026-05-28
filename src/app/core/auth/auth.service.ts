@@ -6,8 +6,7 @@ import { Role } from '../models/enums/role.enum';
 import { Observable } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
-import { tap } from 'rxjs';
-
+import { tap } from 'rxjs'
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -40,7 +39,13 @@ export class AuthService {
         );
 
     }
-    
+    verifyOtp(payload: { email: string; otp: string }): Observable<any> {
+    return this.http.post(`${environment.authApiUrl}/api/auth/verify-otp`, payload);
+}
+
+resendOtp(payload: { email: string }): Observable<any> {
+    return this.http.post(`${environment.authApiUrl}/api/auth/resend-otp`, payload);
+}
     logout(): Observable<any> {
     return this.http.post(
         `${environment.authApiUrl}/api/auth/logout`,

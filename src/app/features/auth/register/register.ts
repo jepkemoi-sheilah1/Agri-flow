@@ -54,7 +54,7 @@ export class RegisterComponent implements  OnInit{
   showPassword = false;
   showConfirmPassword = false;
   
-  // Remove constructor and replace with:
+  
 private formBuilder = inject(FormBuilder);
 private authService = inject(AuthService);
 private router = inject(Router);
@@ -65,7 +65,7 @@ private router = inject(Router);
       {
         userName: ['', Validators.required],
         firstName: ['', Validators.required],
-        surname: ['', Validators.required],
+        surName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
@@ -91,7 +91,8 @@ private router = inject(Router);
     this.authService.register(registerPayload).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/login']);
+        this.router.navigate(['/verify-otp'],
+           { queryParams: { email: registerPayload.email } });
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Registration failed. Please try again.';

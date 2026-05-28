@@ -1,0 +1,101 @@
+<div class="otp-page">
+  <div class="otp-card">
+
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-icon">
+        <mat-icon>eco</mat-icon>
+      </div>
+      <span class="brand-name">AgriFlow</span>
+    </div>
+
+    <!-- Heading -->
+    <div class="otp-heading">
+      <div class="otp-icon-wrapper">
+        <mat-icon class="otp-icon">phone_iphone</mat-icon>
+      </div>
+      <h2>Verify your phone</h2>
+      <p>Enter the 6-digit code sent to</p>
+      <p class="user-email">{{ userEmail || 'your phone number' }}</p>
+    </div>
+
+    <!-- Error message -->
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Success message -->
+    @if (successMessage) {
+      <div class="success-box">
+        <mat-icon>check_circle_outline</mat-icon>
+        <span>{{ successMessage }}</span>
+      </div>
+    }
+
+    <!-- OTP Form -->
+    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>6-digit OTP code</mat-label>
+        <input
+          matInput
+          formControlName="otp"
+          placeholder="123456"
+          maxlength="6"
+          inputmode="numeric" />
+        <mat-icon matSuffix>pin</mat-icon>
+        @if (f['otp'].invalid && f['otp'].touched) {
+          <mat-error>Please enter a valid 6-digit code</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Submit button -->
+      <button
+        mat-flat-button
+        type="submit"
+        class="submit-btn"
+        [disabled]="isLoading || otpForm.invalid">
+        @if (isLoading) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Verify account
+        }
+      </button>
+
+    </form>
+
+    <!-- Resend OTP -->
+    <div class="resend-section">
+      <p>Didn't receive the code?</p>
+      @if (cooldown > 0) {
+        <p class="cooldown-text">
+          Resend in <strong>{{ cooldown }}s</strong>
+        </p>
+      } @else {
+        <button
+          mat-button
+          class="resend-btn"
+          (click)="resendOtp()"
+          [disabled]="isResending">
+          @if (isResending) {
+            <mat-spinner diameter="16"></mat-spinner>
+          } @else {
+            Resend OTP
+          }
+        </button>
+      }
+    </div>
+
+    <!-- Back to login -->
+    <p class="back-link">
+      <a routerLink="/login">
+        <mat-icon>arrow_back</mat-icon>
+        Back to sign in
+      </a>
+    </p>
+
+  </div>
+</div>
