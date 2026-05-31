@@ -48,9 +48,9 @@
       <!-- Username -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Username</mat-label>
-        <input matInput formControlName="userName" placeholder="juma_farmer" />
+        <input matInput formControlName="username" placeholder="juma_farmer" />
         <mat-icon matSuffix>person_outline</mat-icon>
-        @if (f['userName'].invalid && f['userName'].touched) {
+        @if (f['username'].invalid && f['username'].touched) {
           <mat-error>Username is required</mat-error>
         }
       </mat-form-field>

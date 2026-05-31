@@ -54,32 +54,32 @@ export class LoginComponent implements OnInit {
 
   // 4. Call login service
   this.authService.login({ email, password}).subscribe({
-    next: (response) => {
-
-      // 5. Check roles and navigate
-      const roles: string[] = response.data.user.roles || [];
-
-      if (roles.includes('SUPER_ADMIN')) {
-    this.router.navigate(['/super-admin']);
-} else if (roles.includes('ADMIN')) {
-    this.router.navigate(['/admin']);
-} else {
-    this.router.navigate(['/buyer']);
-}
-
-      // 7. Stop loading
+   next: (response) => {
+  // token already stored by auth.service tap()
+  // now get full user profile
+  this.authService.getProfile().subscribe({
+    next: (user) => {
       this.isLoading = false;
-    },
+      const roles: string[] = user.roles || [];
 
-    error: (error) => {
-      // 6. Set error message
-      this.errorMessage =
-        error?.error?.message || 'Login failed. Please try again.';
-
-      // 7. Stop loading
-      this.isLoading = false;
-    }
-  });
-}
+            if (roles.includes('SUPER_ADMIN')) {
+              this.router.navigate(['/super-admin']);
+            } else if (roles.includes('ADMIN')) {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/buyer']);
+            }
+          },
+          error: () => {
+            this.isLoading = false;
+            this.router.navigate(['/buyer']);
+          }
+        });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error?.message || 'Login failed, please try again.';
+      }
+    });
   }
-
+}

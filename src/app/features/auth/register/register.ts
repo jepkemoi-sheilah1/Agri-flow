@@ -63,7 +63,7 @@ private router = inject(Router);
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
       {
-        userName: ['', Validators.required],
+        username: ['', Validators.required],
         firstName: ['', Validators.required],
         surName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
