@@ -1,0 +1,170 @@
+.dashboard-layout {
+  min-height: 100vh;
+  background: #f5f8f2;
+}
+
+.dashboard-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.welcome-section {
+  margin-bottom: 1.5rem;
+}
+
+.welcome-section h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 4px;
+  color: #1a1a1a;
+}
+
+.welcome-section p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  border-radius: 10px !important;
+}
+
+.stat-card mat-card-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px !important;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon.green { background: #EAF3DE; color: #3B6D11; }
+.stat-icon.orange { background: #FEF3E2; color: #E67E22; }
+.stat-icon.blue { background: #E8F4FD; color: #2980B9; }
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.selling-card {
+  margin-bottom: 1.5rem;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #EAF3DE, #f5f8f2) !important;
+  border: 1px solid #c8e6a0 !important;
+}
+
+.selling-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px;
+}
+
+.selling-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #3B6D11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.selling-text {
+  flex: 1;
+}
+
+.selling-text h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.selling-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.sell-btn {
+  background-color: #639922 !important;
+  color: white !important;
+  flex-shrink: 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.see-all {
+  font-size: 13px;
+  color: #639922;
+  text-decoration: none;
+}
+
+.empty-feed {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.empty-feed mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selling-card-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sell-btn {
+    width: 100%;
+  }
+}

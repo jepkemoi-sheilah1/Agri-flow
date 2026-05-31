@@ -1,0 +1,65 @@
+.navbar {
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e8f5e0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #EAF3DE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3B6D11;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #3B6D11;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.role-badge {
+  font-size: 11px;
+  background: #EAF3DE;
+  color: #3B6D11;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
