@@ -22,7 +22,7 @@ export const routes: Routes = [
       .then(m => m.VerifyOtpComponent)
   },
 
-  // protected routes
+  // buyer routes
   {
     path: 'buyer',
     canActivate: [authGuard, roleGuard],
@@ -31,12 +31,45 @@ export const routes: Routes = [
       .then(m => m.Dashboard)
   },
   {
+    path: 'buyer/feed',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/buyer/product-feed/product-feed')
+      .then(m => m.ProductFeed)
+  },
+
+  // seller routes
+  {
+    path: 'seller',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/seller/dashboard/dashboard')
+      .then(m => m.Dashboard)
+  },
+  {
+    path: 'seller/register-business',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/business-register/business-register')
+      .then(m => m.BusinessRegister)
+  },
+  {
+    path: 'seller/create-product',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/seller/create-product/create-product')
+      .then(m => m.CreateProduct)
+  },
+
+  // admin routes
+  {
     path: 'admin',
     canActivate: [authGuard, roleGuard],
     data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/admin/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
+
+  // super admin routes
   {
     path: 'super-admin',
     canActivate: [authGuard, roleGuard],
@@ -44,6 +77,8 @@ export const routes: Routes = [
     loadComponent: () => import('./features/super-admin/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
+
+  // unauthorized
   {
     path: 'unauthorized',
     loadComponent: () => import('./features/auth/unauthorized/unauthorized')
