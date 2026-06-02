@@ -1,86 +1,77 @@
-<div class="dashboard-layout">
+<app-dashboard-layout>
 
-  <!-- Navbar -->
-  <app-navbar />
+  <!-- Welcome section -->
+  <div class="welcome-section">
+    <h1>Welcome back, {{ user$?.firstName || 'Farmer' }} 👋</h1>
+    <p>Here is what is happening on AgriFlow today</p>
+  </div>
 
-  <!-- Main content -->
-  <div class="dashboard-content">
-
-    <!-- Welcome section -->
-    <div class="welcome-section">
-      <div>
-        <h1>Welcome back, {{ user$?.firstName || 'Farmer' }} 👋</h1>
-        <p>Here is what is happening on AgriFlow today</p>
-      </div>
-    </div>
-
-    <!-- Stats cards -->
-    <div class="stats-grid">
-      <mat-card class="stat-card">
-        <mat-card-content>
-          <div class="stat-icon green">
-            <mat-icon>storefront</mat-icon>
-          </div>
-          <div class="stat-info">
-            <span class="stat-number">0</span>
-            <span class="stat-label">Products Available</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-content>
-          <div class="stat-icon orange">
-            <mat-icon>shopping_cart</mat-icon>
-          </div>
-          <div class="stat-info">
-            <span class="stat-number">0</span>
-            <span class="stat-label">My Orders</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-content>
-          <div class="stat-icon blue">
-            <mat-icon>people</mat-icon>
-          </div>
-          <div class="stat-info">
-            <span class="stat-number">0</span>
-            <span class="stat-label">Active Sellers</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <!-- Start selling card -->
-    <mat-card class="selling-card">
+  <!-- Stats cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card">
       <mat-card-content>
-        <div class="selling-card-inner">
-          <div class="selling-icon">
-            <mat-icon>agriculture</mat-icon>
-          </div>
-          <div class="selling-text">
-            <h3>Start Selling Your Produce</h3>
-            <p>Register your farm business and start listing your products for thousands of buyers</p>
-          </div>
-          <button mat-flat-button routerLink="/seller/register-business" class="sell-btn">
-            Start Selling
-          </button>
+        <div class="stat-icon green">
+          <mat-icon>storefront</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Products Available</span>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <!-- Product feed placeholder -->
-    <div class="section-header">
-      <h2>Fresh Produce Near You</h2>
-      <a routerLink="/buyer/feed" class="see-all">See all</a>
-    </div>
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon orange">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">My Orders</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div class="empty-feed">
-      <mat-icon>grass</mat-icon>
-      <p>Products will appear here once sellers list them</p>
-    </div>
-
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon blue">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Active Sellers</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-</div>
+
+  <!-- Start selling card -->
+  <mat-card class="selling-card">
+    <mat-card-content>
+      <div class="selling-card-inner">
+        <div class="selling-icon">
+          <mat-icon>agriculture</mat-icon>
+        </div>
+        <div class="selling-text">
+          <h3>Start Selling Your Produce</h3>
+          <p>Register your farm business and start listing your products for thousands of buyers</p>
+        </div>
+        <button mat-flat-button routerLink="/seller/register-business" class="sell-btn">
+          Start Selling
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Product feed placeholder -->
+  <div class="section-header">
+    <h2>Fresh Produce Near You</h2>
+    <a routerLink="/buyer/feed" class="see-all">See all</a>
+  </div>
+
+  <div class="empty-feed">
+    <mat-icon>grass</mat-icon>
+    <p>Products will appear here once sellers list them</p>
+  </div>
+
+</app-dashboard-layout>

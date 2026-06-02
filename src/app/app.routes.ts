@@ -25,14 +25,14 @@ export const routes: Routes = [
   // buyer routes
   {
     path: 'buyer',
-    canActivate: [authGuard, roleGuard],
+   // canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
   {
     path: 'buyer/feed',
-    canActivate: [authGuard, roleGuard],
+    //canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/product-feed/product-feed')
       .then(m => m.ProductFeed)
@@ -41,20 +41,20 @@ export const routes: Routes = [
   // seller routes
   {
     path: 'seller',
-    canActivate: [authGuard, roleGuard],
+    //canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
   {
     path: 'seller/register-business',
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
     loadComponent: () => import('./features/seller/business-register/business-register')
       .then(m => m.BusinessRegister)
   },
   {
     path: 'seller/create-product',
-    canActivate: [authGuard, roleGuard],
+   // canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
@@ -63,7 +63,7 @@ export const routes: Routes = [
   // admin routes
   {
     path: 'admin',
-    canActivate: [authGuard, roleGuard],
+    //canActivate: [authGuard, roleGuard],
     data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/admin/dashboard/dashboard')
       .then(m => m.Dashboard)
@@ -72,7 +72,7 @@ export const routes: Routes = [
   // super admin routes
   {
     path: 'super-admin',
-    canActivate: [authGuard, roleGuard],
+    //canActivate: [authGuard, roleGuard],
     data: { roles: [Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/super-admin/dashboard/dashboard')
       .then(m => m.Dashboard)

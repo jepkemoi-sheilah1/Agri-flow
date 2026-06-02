@@ -34,6 +34,12 @@ export class AuthService {
             data
         );
     }
+    registerBusiness(data: { businessName: string; businessEmail: string; businessPhone: string }): Observable<any> {
+    return this.http.post(
+        `${environment.authApiUrl}${Endpoints.auth.businessRegister}`,
+        data
+    );
+}
 
     verifyOtp(payload: { email: string; otp: string }): Observable<any> {
         return this.http.post(

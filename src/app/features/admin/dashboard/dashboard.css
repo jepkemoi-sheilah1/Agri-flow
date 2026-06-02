@@ -1,0 +1,22 @@
+.dashboard-layout {
+  min-height: 100vh;
+  background: #f5f8f2;
+}
+
+.dashboard-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.welcome-section h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+
+.welcome-section p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}

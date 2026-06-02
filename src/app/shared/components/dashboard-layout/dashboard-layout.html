@@ -1,0 +1,73 @@
+<div class="layout-wrapper">
+
+  <!-- Top Navbar -->
+  <header class="top-navbar">
+    <div class="navbar-left">
+      <button mat-icon-button class="hamburger" (click)="toggleSidebar()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a routerLink="/" class="brand">
+        <div class="brand-icon">
+          <mat-icon>eco</mat-icon>
+        </div>
+        <span class="brand-name">AgriFlow</span>
+      </a>
+    </div>
+
+    <div class="navbar-right">
+      @if (user) {
+        <div class="user-info">
+          <span class="user-name">{{ user.firstName }} {{ user.surName }}</span>
+         <span class="role-badge">{{ user.roles?.[0] }}</span>
+        </div>
+      }
+      <button mat-icon-button (click)="logout()" title="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.open]="isSidebarOpen">
+      <nav class="sidebar-nav">
+        @for (item of menuItems; track item.route) {
+  <a [routerLink]="item.route"
+     routerLinkActive="active"
+     class="nav-item"
+     (click)="isSidebarOpen = false">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span>{{ item.label }}</span>
+  </a>
+}
+        
+      </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    @if (isSidebarOpen) {
+      <div class="overlay" (click)="toggleSidebar()"></div>
+    }
+
+    <!-- Main content -->
+    <main class="main-content">
+      <ng-content />
+    </main>
+
+  </div>
+
+  <!-- Bottom navigation (mobile only) -->
+  <nav class="bottom-nav">
+   @for (item of bottomNavItems; track item.route) {
+  <a [routerLink]="item.route"
+     routerLinkActive="active"
+     class="bottom-nav-item">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span>{{ item.label }}</span>
+  </a>
+}
+    
+  </nav>
+
+</div>
