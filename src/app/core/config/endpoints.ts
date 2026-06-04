@@ -20,6 +20,21 @@ export const Endpoints = {
     myProducts:        '/api/products/my',
     filterByCategory:  '/api/products/filter',
     search:            '/api/products/search',
+  },
+
+  cart: {
+    add:               '/api/cart/add',
+    get:               '/api/cart',
+    removeItem:        (itemId: string) => `/api/cart/items/${itemId}`,
+    clear:             '/api/cart/clear',
+  },
+
+  order: {
+    checkout:          '/api/orders/checkout',
+    updateStatus:      (id: string) => `/api/orders/${id}/status`,
+    getById:           (id: string) => `/api/orders/${id}`,
+    myOrders:          '/api/orders/my-orders',
+    businessOrders:    (businessId: string) => `/api/orders/business/${businessId}`,
   }
 
 };

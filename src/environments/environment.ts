@@ -5,5 +5,6 @@ export const environment = {
   
 authApiUrl: 'http://192.168.137.40:8089'  ,
 productApiUrl: 'http://192.168.137.40.:8089',
+ orderApiUrl: 'http://localhost:8083'
 
 }
