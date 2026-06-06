@@ -1,1 +1,90 @@
-<p>product-feed works!</p>
+<app-dashboard-layout>
+
+  <!-- Header -->
+  <div class="feed-header">
+    <div>
+      <h1>Browse Products</h1>
+      <p>Fresh produce from farmers near you</p>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search products...</mat-label>
+      <input matInput [(ngModel)]="searchKeyword"
+        (keyup.enter)="onSearch()"
+        placeholder="e.g. Tomatoes, Maize" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    @if (searchKeyword) {
+      <button mat-stroked-button (click)="clearSearch()">
+        Clear
+      </button>
+    }
+    <button mat-flat-button class="search-btn" (click)="onSearch()">
+      Search
+    </button>
+  </div>
+
+  <!-- Error -->
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading products...</p>
+    </div>
+  }
+
+  <!-- Product grid -->
+  @if (!isLoading) {
+    @if (filteredProducts.length === 0) {
+      <div class="empty-state">
+        <mat-icon>grass</mat-icon>
+        <h3>No products found</h3>
+        <p>Check back later or try a different search</p>
+      </div>
+    } @else {
+      <div class="product-grid">
+        @for (product of filteredProducts; track product.id) {
+          <mat-card class="product-card">
+            <div class="product-image">
+              @if (product.images && product.images.length > 0) {
+                <img [src]="product.images[0]" [alt]="product.productName" />
+              } @else {
+                <div class="no-image">
+                  <mat-icon>image_not_supported</mat-icon>
+                </div>
+              }
+            </div>
+            <mat-card-content>
+              <h3 class="product-name">{{ product.productName }}</h3>
+              <p class="product-desc">{{ product.description }}</p>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price">KES {{ product.price }}</span>
+                  <span class="unit">per {{ product.unit }}</span>
+                </div>
+                <span class="quantity">{{ product.quantity }} available</span>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-flat-button class="add-cart-btn">
+                <mat-icon>add_shopping_cart</mat-icon>
+                Add to Cart
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    }
+  }
+
+</app-dashboard-layout>

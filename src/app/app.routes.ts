@@ -37,28 +37,29 @@ export const routes: Routes = [
     loadComponent: () => import('./features/buyer/product-feed/product-feed')
       .then(m => m.ProductFeed)
   },
+// seller routes 
+  {
+  path: 'seller',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+  loadComponent: () => import('./features/seller/dashboard/dashboard')
+    .then(m => m.Dashboard)
+},
 
-  // seller routes
-  {
-    path: 'seller',
-    //canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
-    loadComponent: () => import('./features/seller/dashboard/dashboard')
-      .then(m => m.Dashboard)
-  },
-  {
-    path: 'seller/register-business',
-    //canActivate: [authGuard],
-    loadComponent: () => import('./features/seller/business-register/business-register')
-      .then(m => m.BusinessRegister)
-  },
-  {
-    path: 'seller/create-product',
-   // canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
-    loadComponent: () => import('./features/seller/create-product/create-product')
-      .then(m => m.CreateProduct)
-  },
+{
+  path: 'seller',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+  loadComponent: () => import('./features/seller/dashboard/dashboard')
+    .then(m => m.Dashboard)
+},
+{
+  path: 'seller/create-product',
+  canActivate: [authGuard, roleGuard],
+  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+  loadComponent: () => import('./features/seller/create-product/create-product')
+    .then(m => m.CreateProduct)
+},
 
   // admin routes
   {
@@ -83,6 +84,11 @@ export const routes: Routes = [
     path: 'unauthorized',
     loadComponent: () => import('./features/auth/unauthorized/unauthorized')
       .then(m => m.Unauthorized)
+  },
+  {
+    path: 'create-product',
+    loadComponent: () => import('./features/seller/create-product/create-product')
+      .then(m => m.CreateProduct)
   },
 
   // fallback

@@ -1,1 +1,141 @@
-<p>create-product works!</p>
+<app-dashboard-layout>
+
+  <div class="page-header">
+    <a routerLink="/seller" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      Back to dashboard
+    </a>
+    <h1>Create Product</h1>
+    <p>List your farm produce for buyers on AgriFlow</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+
+      <!-- Left column -->
+      <div class="form-left">
+        <mat-card>
+          <mat-card-content>
+            <h3>Product Details</h3>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Product name</mat-label>
+              <input matInput formControlName="productName" placeholder="Fresh Tomatoes" />
+              @if (f['productName'].invalid && f['productName'].touched) {
+                <mat-error>Product name is required</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="3"
+                placeholder="Describe your produce..."></textarea>
+              @if (f['description'].invalid && f['description'].touched) {
+                <mat-error>Description is required</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="categoryId">
+                @for (cat of categories; track cat.id) {
+                  <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
+                }
+              </mat-select>
+              @if (f['categoryId'].invalid && f['categoryId'].touched) {
+                <mat-error>Please select a category</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="two-col">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Price (KES)</mat-label>
+                <input matInput type="number" formControlName="price" placeholder="120" />
+                @if (f['price'].invalid && f['price'].touched) {
+                  <mat-error>Valid price required</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Quantity</mat-label>
+                <input matInput type="number" formControlName="quantity" placeholder="50" />
+                @if (f['quantity'].invalid && f['quantity'].touched) {
+                  <mat-error>Valid quantity required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Unit</mat-label>
+              <mat-select formControlName="unit">
+                @for (unit of units; track unit) {
+                  <mat-option [value]="unit">{{ unit }}</mat-option>
+                }
+              </mat-select>
+              @if (f['unit'].invalid && f['unit'].touched) {
+                <mat-error>Please select a unit</mat-error>
+              }
+            </mat-form-field>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Right column -->
+      <div class="form-right">
+        <mat-card>
+          <mat-card-content>
+            <h3>Product Image</h3>
+
+            @if (imagePreviewUrl) {
+              <div class="image-preview">
+                <img [src]="imagePreviewUrl" alt="Product preview" />
+                <button mat-icon-button class="remove-image" (click)="removeImage()" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            } @else {
+              <div class="image-upload" (click)="imageInput.click()">
+                <mat-icon>cloud_upload</mat-icon>
+                <p>Click to upload image</p>
+                <span>PNG, JPG up to 5MB</span>
+              </div>
+            }
+
+            <input #imageInput type="file" accept="image/*"
+              (change)="onImageSelected($event)" hidden />
+
+            @if (!imagePreviewUrl) {
+              <button mat-stroked-button type="button" class="upload-btn"
+                (click)="imageInput.click()">
+                <mat-icon>add_photo_alternate</mat-icon>
+                Choose Image
+              </button>
+            }
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+
+    <!-- Submit -->
+    <button mat-flat-button type="submit" class="submit-btn"
+      [disabled]="isLoading || productForm.invalid">
+      @if (isLoading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      } @else {
+        List Product
+      }
+    </button>
+
+  </form>
+
+</app-dashboard-layout>
