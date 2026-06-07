@@ -90,6 +90,13 @@ export const routes: Routes = [
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
   },
+  {
+  path: 'admin/businesses',
+  //canActivate: [authGuard, roleGuard],
+  data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
+  loadComponent: () => import('./features/admin/business-approvals/business-approvals')
+    .then(m => m.BusinessApprovals)
+},
 
   // fallback
   {

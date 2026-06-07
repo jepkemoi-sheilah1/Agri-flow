@@ -1,0 +1,71 @@
+<app-dashboard-layout>
+
+  <div class="page-header">
+    <h1>Business Approvals</h1>
+    <p>Review and approve seller business registrations</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="success-box">
+      <mat-icon>check_circle_outline</mat-icon>
+      <span>{{ successMessage }}</span>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading pending businesses...</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+    @if (businesses.length === 0) {
+      <div class="empty-state">
+        <mat-icon>business</mat-icon>
+        <h3>No pending businesses</h3>
+        <p>All business registrations have been reviewed</p>
+      </div>
+    } @else {
+      <div class="business-list">
+        @for (business of businesses; track business.id) {
+          <mat-card class="business-card">
+            <mat-card-content>
+              <div class="business-header">
+                <div class="business-icon">
+                  <mat-icon>store</mat-icon>
+                </div>
+                <div class="business-info">
+                  <h3>{{ business.businessName }}</h3>
+                  <p>{{ business.businessEmail }}</p>
+                  <p>{{ business.businessPhone }}</p>
+                </div>
+                <span class="status-badge pending">PENDING</span>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-flat-button class="approve-btn"
+                (click)="approve(business.id)">
+                <mat-icon>check</mat-icon>
+                Approve
+              </button>
+              <button mat-stroked-button class="reject-btn"
+                (click)="reject(business.id)">
+                <mat-icon>close</mat-icon>
+                Reject
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    }
+  }
+
+</app-dashboard-layout>

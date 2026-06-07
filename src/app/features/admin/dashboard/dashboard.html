@@ -1,6 +1,64 @@
 <app-dashboard-layout>
+
   <div class="welcome-section">
     <h1>Admin Dashboard</h1>
     <p>Manage sellers, disputes and platform activity</p>
   </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon orange">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Pending Approvals</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon blue">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Total Users</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon green">
+          <mat-icon>store</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Active Businesses</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Quick actions -->
+  <mat-card class="action-card">
+    <mat-card-content>
+      <div class="action-inner">
+        <div class="action-icon">
+          <mat-icon>business</mat-icon>
+        </div>
+        <div class="action-text">
+          <h3>Business Approvals</h3>
+          <p>Review and approve pending seller registrations</p>
+        </div>
+        <button mat-flat-button routerLink="/admin/businesses" class="action-btn">
+          Review Now
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
 </app-dashboard-layout>
