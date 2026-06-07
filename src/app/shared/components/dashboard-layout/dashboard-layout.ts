@@ -68,6 +68,7 @@ export class DashboardLayout {
     return [
       { label: 'Home',           icon: 'home',         route: '/buyer' },
       { label: 'Browse Products',icon: 'storefront',   route: '/buyer/feed' },
+      { label: 'Cart',             icon: 'shopping_cart', route: '/buyer/cart' },
       { label: 'My Orders',      icon: 'shopping_bag', route: '/buyer/orders' },
       { label: 'Start Selling',  icon: 'agriculture',  route: '/seller/register-business' },
       { label: 'Profile',        icon: 'person',       route: '/buyer/profile' },

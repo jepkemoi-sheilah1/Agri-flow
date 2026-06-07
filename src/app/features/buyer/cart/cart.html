@@ -1,0 +1,110 @@
+<p>cart wo<app-dashboard-layout>
+
+  <div class="page-header">
+    <h1>My Cart</h1>
+    <p>{{ totalItems }} item(s) in your cart</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading cart...</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+    @if (!cart || cart.items.length === 0) {
+      <div class="empty-state">
+        <mat-icon>shopping_cart</mat-icon>
+        <h3>Your cart is empty</h3>
+        <p>Browse products and add items to your cart</p>
+        <button mat-flat-button routerLink="/buyer/feed" class="browse-btn">
+          Browse Products
+        </button>
+      </div>
+    } @else {
+      <div class="cart-layout">
+
+        <!-- Cart items -->
+        <div class="cart-items">
+          @for (item of cart.items; track item.id) {
+            <mat-card class="cart-item">
+              <mat-card-content>
+                <div class="item-row">
+                  <div class="item-image">
+                    @if (item.productImage) {
+                      <img [src]="item.productImage" [alt]="item.productName" />
+                    } @else {
+                      <mat-icon>image_not_supported</mat-icon>
+                    }
+                  </div>
+                  <div class="item-details">
+                    <h3>{{ item.productName }}</h3>
+                    <p>KES {{ item.price }} per {{ item.unit }}</p>
+                    <p class="quantity">Qty: {{ item.quantity }}</p>
+                  </div>
+                  <div class="item-right">
+                    <span class="subtotal">KES {{ item.subtotal }}</span>
+                    <button mat-icon-button class="remove-btn"
+                      (click)="removeItem(item.id)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+
+          <!-- Clear cart -->
+          <button mat-stroked-button class="clear-btn" (click)="clearCart()">
+            <mat-icon>remove_shopping_cart</mat-icon>
+            Clear Cart
+          </button>
+        </div>
+
+        <!-- Order summary -->
+        <div class="order-summary">
+          <mat-card>
+            <mat-card-content>
+              <h3>Order Summary</h3>
+              <mat-divider></mat-divider>
+
+              <div class="summary-row">
+                <span>Items ({{ totalItems }})</span>
+                <span>KES {{ totalAmount }}</span>
+              </div>
+
+              <div class="summary-row">
+                <span>Delivery</span>
+                <span>Calculated at checkout</span>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <div class="summary-row total">
+                <span>Total</span>
+                <span>KES {{ totalAmount }}</span>
+              </div>
+
+              <button mat-flat-button class="checkout-btn"
+                routerLink="/buyer/checkout"
+                [disabled]="isCheckingOut">
+                Proceed to Checkout
+              </button>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+    }
+  }
+
+</app-dashboard-layout>rks!</p>
