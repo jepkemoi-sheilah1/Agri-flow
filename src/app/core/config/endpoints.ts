@@ -10,6 +10,11 @@ export const Endpoints = {
     me:                '/api/users/me',
     businessRegister:  '/api/businesses/register',
   },
+  business: {
+    approveBusinesses: (id: string) => `/api/businesses/${id}/approve`,
+    rejectBusiness:    (id: string) => `/api/businesses/${id}/reject`,
+    myBusiness:        '/api/businesses/me',
+  },
 
   product: {
     create:            '/api/products',
@@ -35,6 +40,14 @@ export const Endpoints = {
     getById:           (id: string) => `/api/orders/${id}`,
     myOrders:          '/api/orders/my-orders',
     businessOrders:    (businessId: string) => `/api/orders/business/${businessId}`,
-  }
+  },
+  //payment endpoints
+  payment: {
+    stkPush:    '/api/payments/stk-push',
+    myPayments: '/api/payments/my-payments',
+    getByOrder: (orderId: string) => `/api/payments/order/${orderId}`,
+}
+
+
 
 };

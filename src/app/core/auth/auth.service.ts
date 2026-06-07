@@ -17,17 +17,16 @@ export class AuthService {
     private refreshTokenKey = 'agri-flow-refresh-token';
 
     login(credentials: LoginRequest): Observable<AuthResponse> {
-        return this.http.post<AuthResponse>(
-            `${environment.authApiUrl}${Endpoints.auth.login}`,
-            credentials
-        ).pipe(
-            tap(response => {
-                localStorage.setItem(this.tokenKey, response.data.token);
-                localStorage.setItem(this.refreshTokenKey, response.data.refreshToken);
-            })
-        );
-    }
-
+    return this.http.post<AuthResponse>(
+        `${environment.authApiUrl}${Endpoints.auth.login}`,
+        credentials
+    ).pipe(
+        tap(response => {
+            localStorage.setItem(this.tokenKey, response.accessToken);       
+            localStorage.setItem(this.refreshTokenKey, response.refreshToken); 
+        })
+    );
+}
     register(data: RegisterRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(
             `${environment.authApiUrl}${Endpoints.auth.register}`,

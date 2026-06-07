@@ -104,6 +104,12 @@ export const routes: Routes = [
   loadComponent: () => import('./features/buyer/cart/cart')
     .then(m => m.Cart)
 },
+{
+  path: 'buyer/checkout',
+  canActivate: [authGuard],
+  loadComponent: () => import('./features/buyer/checkout/checkout')
+    .then(m => m.Checkout)
+},
 
   // fallback
   {

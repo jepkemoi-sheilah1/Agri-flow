@@ -1,10 +1,7 @@
-
-
 export const environment = {
   production: false,
-  
-authApiUrl: 'http://192.168.137.40:8089'  ,
-productApiUrl: 'http://192.168.137.40.:8089',
- orderApiUrl: 'http://localhost:8083'
-
-}
+  authApiUrl:    'https://hallie-unshirked-sharolyn.ngrok-free.dev',
+  productApiUrl: 'https://hallie-unshirked-sharolyn.ngrok-free.dev',
+  orderApiUrl:   'https://hallie-unshirked-sharolyn.ngrok-free.dev',
+  paymentApiUrl: 'https://hallie-unshirked-sharolyn.ngrok-free.dev',
+};

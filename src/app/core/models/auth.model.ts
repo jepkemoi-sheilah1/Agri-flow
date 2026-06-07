@@ -3,12 +3,12 @@ import { Role } from './enums/role.enum';
 
 
 export interface AuthResponse {
-    data: {
-        refreshToken: string;
-        token: string;
-        user: User;
-    };
+    accessToken: string;   
+    refreshToken: string;   
+    role: string;
+    username: string;
 }
+
 export interface LoginRequest {
     email: string;
     password: string;   
@@ -17,10 +17,11 @@ export interface LoginRequest {
 export interface  RegisterRequest {
     username: string;
     firstName: string;
+    middleName?: string;
     surname: string;
     email: string;
     password: string;
     phoneNumber: string;
-    role: 'FARMER'; // e.g. ['BUYER', 'SELLER']
+    role: 'farmer'; // e.g. ['BUYER', 'SELLER']
     
 }

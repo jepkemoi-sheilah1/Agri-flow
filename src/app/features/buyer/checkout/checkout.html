@@ -1,0 +1,102 @@
+<app-dashboard-layout>
+
+  <div class="page-header">
+    <a routerLink="/buyer/cart" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      Back to cart
+    </a>
+    <h1>Checkout</h1>
+    <p>Complete your order</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <div class="checkout-layout">
+
+      <!-- Delivery form -->
+      <div class="delivery-section">
+        <mat-card>
+          <mat-card-content>
+            <h3>Delivery Details</h3>
+
+            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Delivery address</mat-label>
+                <textarea matInput formControlName="deliveryAddress"
+                  rows="3"
+                  placeholder="Enter your full delivery address...">
+                </textarea>
+                <mat-icon matSuffix>location_on</mat-icon>
+                @if (checkoutForm.get('deliveryAddress')?.invalid &&
+                     checkoutForm.get('deliveryAddress')?.touched) {
+                  <mat-error>Please enter a valid delivery address</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Delivery notes (optional)</mat-label>
+                <textarea matInput formControlName="deliveryNotes"
+                  rows="2"
+                  placeholder="Any special instructions...">
+                </textarea>
+              </mat-form-field>
+
+              <button mat-flat-button type="submit" class="place-order-btn"
+                [disabled]="isSubmitting || checkoutForm.invalid">
+                @if (isSubmitting) {
+                  <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                  <mat-icon>check_circle</mat-icon>
+                  Place Order
+                }
+              </button>
+
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Order summary -->
+      <div class="summary-section">
+        <mat-card>
+          <mat-card-content>
+            <h3>Order Summary</h3>
+            <mat-divider></mat-divider>
+
+            @if (cart) {
+              @for (item of cart.items; track item.id) {
+                <div class="summary-item">
+                  <span>{{ item.productName }} x{{ item.quantity }}</span>
+                  <span>KES {{ item.subtotal }}</span>
+                </div>
+              }
+            }
+
+            <mat-divider></mat-divider>
+
+            <div class="summary-total">
+              <span>Total ({{ totalItems }} items)</span>
+              <span class="total-amount">KES {{ totalAmount }}</span>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+  }
+
+</app-dashboard-layout>
