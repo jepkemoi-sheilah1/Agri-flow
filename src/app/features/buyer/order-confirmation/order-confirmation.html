@@ -1,0 +1,125 @@
+<app-dashboard-layout>
+
+  <div class="page-header">
+    <h1>Order Confirmed</h1>
+    <p>Thank you for your purchase</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (!isLoading && order) {
+    <div class="confirmation-layout">
+
+      <!-- Success banner -->
+      <mat-card class="success-banner">
+        <mat-card-content>
+          <mat-icon class="success-icon">check_circle</mat-icon>
+          <div>
+            <h2>Payment Successful</h2>
+            <p>Order <strong>#{{ order.orderNumber }}</strong> has been placed.</p>
+            @if (payment?.mpesaReceiptNumber) {
+              <p class="receipt">M-Pesa Receipt: <strong>{{ payment?.mpesaReceiptNumber }}</strong></p>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="confirmation-grid">
+
+        <!-- Order items -->
+        <mat-card>
+          <mat-card-content>
+            <h3>Items Ordered</h3>
+            <mat-divider></mat-divider>
+
+            @for (item of order.items; track item.id) {
+              <div class="order-item">
+                <div class="item-info">
+                  <span class="item-name">{{ item.productName }}</span>
+                  <span class="item-qty">x{{ item.quantity }} @ KES {{ item.price }}</span>
+                </div>
+                <span class="item-subtotal">KES {{ item.subtotal }}</span>
+              </div>
+            }
+
+            <mat-divider></mat-divider>
+
+            <div class="order-total">
+              <span>Total ({{ totalItems }} items)</span>
+              <span class="total-amount">KES {{ order.totalAmount }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Delivery & shipment -->
+        <div class="side-cards">
+
+          <mat-card>
+            <mat-card-content>
+              <h3>Delivery Details</h3>
+              <mat-divider></mat-divider>
+              <div class="detail-row">
+                <mat-icon>location_on</mat-icon>
+                <span>{{ order.deliveryAddress }}</span>
+              </div>
+              @if (order.deliveryNotes) {
+                <div class="detail-row">
+                  <mat-icon>notes</mat-icon>
+                  <span>{{ order.deliveryNotes }}</span>
+                </div>
+              }
+            </mat-card-content>
+          </mat-card>
+
+          @if (order.shipment) {
+            <mat-card>
+              <mat-card-content>
+                <h3>Shipment</h3>
+                <mat-divider></mat-divider>
+                <div class="detail-row">
+                  <mat-icon>local_shipping</mat-icon>
+                  <span>{{ order.shipment.carrier }}</span>
+                </div>
+                <div class="detail-row">
+                  <mat-icon>tag</mat-icon>
+                  <span>Tracking: {{ order.shipment.trackingNumber }}</span>
+                </div>
+                <div class="detail-row">
+                  <mat-icon>schedule</mat-icon>
+                  <span>Est. delivery: {{ order.shipment.estimatedDelivery | date:'mediumDate' }}</span>
+                </div>
+                <div class="shipment-status">{{ order.shipment.status }}</div>
+              </mat-card-content>
+            </mat-card>
+          }
+
+          <!-- Actions -->
+          <div class="actions">
+            <button mat-flat-button class="continue-btn" routerLink="/buyer/feed">
+              <mat-icon>storefront</mat-icon>
+              Continue Shopping
+            </button>
+            <button mat-stroked-button class="orders-btn" routerLink="/buyer">
+              <mat-icon>receipt_long</mat-icon>
+              View Dashboard
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+</app-dashboard-layout>

@@ -5,7 +5,7 @@ import { Role } from './core/models/enums/role.enum';
 
 export const routes: Routes = [
 
-  // public routes
+  // public
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login')
@@ -21,95 +21,103 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/verify-otp/verify-otp')
       .then(m => m.VerifyOtpComponent)
   },
+  {
+    path: 'unauthorized',
+    loadComponent: () => import('./features/auth/unauthorized/unauthorized')
+      .then(m => m.Unauthorized)
+  },
 
-  // buyer routes
+  // buyer
   {
     path: 'buyer',
-   // canActivate: [authGuard, roleGuard],
+    canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
   {
     path: 'buyer/feed',
-    //canActivate: [authGuard, roleGuard],
+    canActivate: [authGuard, roleGuard],
     data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/product-feed/product-feed')
       .then(m => m.ProductFeed)
   },
-// seller routes 
   {
-  path: 'seller',
-  canActivate: [authGuard, roleGuard],
-  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
-  loadComponent: () => import('./features/seller/dashboard/dashboard')
-    .then(m => m.Dashboard)
-},
-
-{
-  path: 'seller',
-  canActivate: [authGuard, roleGuard],
-  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
-  loadComponent: () => import('./features/seller/dashboard/dashboard')
-    .then(m => m.Dashboard)
-},
-{
-  path: 'seller/create-product',
-  canActivate: [authGuard, roleGuard],
-  data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
-  loadComponent: () => import('./features/seller/create-product/create-product')
-    .then(m => m.CreateProduct)
-},
-
-  // admin routes
+    path: 'buyer/cart',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/buyer/cart/cart')
+      .then(m => m.Cart)
+  },
   {
-    path: 'admin',
-    //canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
-    loadComponent: () => import('./features/admin/dashboard/dashboard')
+    path: 'buyer/checkout',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/buyer/checkout/checkout')
+      .then(m => m.Checkout)
+  },
+  {
+    path: 'buyer/payment',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/buyer/payment/payment')
+      .then(m => m.Payment)
+  },
+  {
+    path: 'buyer/order-confirmation',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/buyer/order-confirmation/order-confirmation')
+      .then(m => m.OrderConfirmation)
+  },
+
+  // seller
+  {
+    path: 'seller',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/seller/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
-
-  // super admin routes
   {
-    path: 'super-admin',
-    //canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.SUPER_ADMIN] },
-    loadComponent: () => import('./features/super-admin/dashboard/dashboard')
-      .then(m => m.Dashboard)
-  },
-
-  // unauthorized
-  {
-    path: 'unauthorized',
-    loadComponent: () => import('./features/auth/unauthorized/unauthorized')
-      .then(m => m.Unauthorized)
-  },
-  {
-    path: 'create-product',
+    path: 'seller/create-product',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
   },
   {
-  path: 'admin/businesses',
-  //canActivate: [authGuard, roleGuard],
-  data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
-  loadComponent: () => import('./features/admin/business-approvals/business-approvals')
-    .then(m => m.BusinessApprovals)
-},
-{
-  path: 'buyer/cart',
-  //canActivate: [authGuard, roleGuard],
-  data: { roles: [Role.BUYER, Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
-  loadComponent: () => import('./features/buyer/cart/cart')
-    .then(m => m.Cart)
-},
-{
-  path: 'buyer/checkout',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/checkout/checkout')
-    .then(m => m.Checkout)
-},
+    path: 'seller/business-register',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/seller/business-register/business-register')
+      .then(m => m.BusinessRegister)
+  },
+
+  // admin
+  {
+    path: 'admin',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/admin/dashboard/dashboard')
+      .then(m => m.Dashboard)
+  },
+  {
+    path: 'admin/businesses',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.ADMIN, Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/admin/business-approvals/business-approvals')
+      .then(m => m.BusinessApprovals)
+  },
+
+  // super admin
+  {
+    path: 'super-admin',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/super-admin/dashboard/dashboard')
+      .then(m => m.Dashboard)
+  },
 
   // fallback
   {

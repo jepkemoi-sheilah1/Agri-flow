@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +7,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { DashboardLayout } from '../../../shared/components/dashboard-layout/dashboard-layout';
 import { ProductService } from '../../../core/services/product.service';
+import { environment } from '../../../../environments/environment';
+import { Endpoints } from '../../../core/config/endpoints';
 
 @Component({
   selector: 'app-business-approvals',
@@ -23,6 +26,7 @@ import { ProductService } from '../../../core/services/product.service';
 })
 export class BusinessApprovals implements OnInit {
   private productService = inject(ProductService);
+  private http = inject(HttpClient);
 
   businesses: any[] = [];
   isLoading = false;
@@ -48,15 +52,28 @@ export class BusinessApprovals implements OnInit {
   }
 
   approve(businessId: string): void {
-    // PATCH /api/businesses/{id}/approve
-    // wire when backend confirms endpoint
-    console.log('Approve:', businessId);
-    this.successMessage = 'Business approved successfully.';
+    this.http.patch(
+      `${environment.authApiUrl}${Endpoints.business.approveBusinesses(businessId)}`,
+      {}
+    ).subscribe({
+      next: () => {
+        this.successMessage = 'Business approved successfully.';
+        this.loadPendingBusinesses();
+      },
+      error: () => this.errorMessage = 'Failed to approve business.'
+    });
   }
 
   reject(businessId: string): void {
-    // PATCH /api/businesses/{id}/reject
-    // wire when backend confirms endpoint
-    console.log('Reject:', businessId);
+    this.http.patch(
+      `${environment.authApiUrl}${Endpoints.business.rejectBusiness(businessId)}`,
+      {}
+    ).subscribe({
+      next: () => {
+        this.successMessage = 'Business rejected.';
+        this.loadPendingBusinesses();
+      },
+      error: () => this.errorMessage = 'Failed to reject business.'
+    });
   }
 }

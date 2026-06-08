@@ -1,0 +1,142 @@
+<app-dashboard-layout>
+
+  <div class="page-header">
+    <a routerLink="/buyer/checkout" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+      Back to checkout
+    </a>
+    <h1>Payment</h1>
+    <p>Complete your purchase via M-Pesa</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-box">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  @if (isLoadingOrder) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (!isLoadingOrder) {
+    <div class="payment-layout">
+
+      <!-- Payment form -->
+      <div class="payment-section">
+
+        @if (isForm) {
+          <mat-card>
+            <mat-card-content>
+              <h3>M-Pesa STK Push</h3>
+              <p class="section-hint">Enter the M-Pesa number to receive the payment prompt.</p>
+
+              <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>M-Pesa Phone Number</mat-label>
+                  <input matInput formControlName="phoneNumber"
+                    placeholder="2547XXXXXXXX" />
+                  <mat-icon matSuffix>phone</mat-icon>
+                  @if (paymentForm.get('phoneNumber')?.invalid &&
+                       paymentForm.get('phoneNumber')?.touched) {
+                    <mat-error>Enter a valid Safaricom number (2547XXXXXXXX)</mat-error>
+                  }
+                </mat-form-field>
+
+                <button mat-flat-button type="submit" class="pay-btn"
+                  [disabled]="isSubmitting || paymentForm.invalid">
+                  @if (isSubmitting) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  } @else {
+                    <mat-icon>payment</mat-icon>
+                    Pay KES {{ totalAmount }}
+                  }
+                </button>
+
+              </form>
+            </mat-card-content>
+          </mat-card>
+        }
+
+        @if (isPending) {
+          <mat-card class="status-card">
+            <mat-card-content>
+              <mat-spinner diameter="48"></mat-spinner>
+              <h3>Waiting for payment...</h3>
+              <p>Check your phone <strong>{{ paymentForm.value.phoneNumber }}</strong> and enter your M-Pesa PIN to complete the payment.</p>
+              @if (latestPayment) {
+                <p class="ref-text">Ref: {{ latestPayment.mpesaCheckoutRequestId }}</p>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+
+        @if (isSuccess) {
+          <mat-card class="status-card success-card">
+            <mat-card-content>
+              <mat-icon class="status-icon success-icon">check_circle</mat-icon>
+              <h3>Payment Successful</h3>
+              @if (latestPayment) {
+                <p>Receipt: <strong>{{ latestPayment.mpesaReceiptNumber }}</strong></p>
+              }
+              <p>Redirecting to your order confirmation...</p>
+            </mat-card-content>
+          </mat-card>
+        }
+
+        @if (isFailed) {
+          <mat-card class="status-card failed-card">
+            <mat-card-content>
+              <mat-icon class="status-icon failed-icon">cancel</mat-icon>
+              <h3>Payment Failed</h3>
+              @if (latestPayment?.failureReason) {
+                <p>{{ latestPayment?.failureReason }}</p>
+              }
+              <button mat-flat-button class="pay-btn" (click)="onRetry()">
+                <mat-icon>refresh</mat-icon>
+                Try Again
+              </button>
+            </mat-card-content>
+          </mat-card>
+        }
+
+      </div>
+
+      <!-- Order summary -->
+      <div class="summary-section">
+        <mat-card>
+          <mat-card-content>
+            <h3>Order Summary</h3>
+            @if (orderNumber) {
+              <p class="order-number">Order #{{ orderNumber }}</p>
+            }
+            <mat-divider></mat-divider>
+
+            @if (order) {
+              @for (item of order.items; track item.id) {
+                <div class="summary-item">
+                  <span>{{ item.productName }} x{{ item.quantity }}</span>
+                  <span>KES {{ item.subtotal }}</span>
+                </div>
+              }
+            }
+
+            <mat-divider></mat-divider>
+
+            <div class="summary-total">
+              <span>Total</span>
+              <span class="total-amount">KES {{ totalAmount }}</span>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+  }
+
+</app-dashboard-layout>

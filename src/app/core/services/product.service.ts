@@ -43,11 +43,11 @@ export class ProductService {
         );
     }
 
-    getPendingBusinesses(): Observable<any[]> {
-        return this.http.get<any[]>(
-            `${environment.productApiUrl}${Endpoints.product.pendingBusinesses}`
-        );
-    }
+   getPendingBusinesses(): Observable<any[]> {
+    return this.http.get<any[]>(
+        `${environment.productApiUrl}${Endpoints.business.pending}`
+    );
+}
 
     filterByCategory(categoryId: string): Observable<Product[]> {
         return this.http.get<Product[]>(
