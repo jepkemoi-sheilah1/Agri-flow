@@ -1,8 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Role } from '../models/enums/role.enum';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
@@ -17,28 +15,30 @@ export class AuthService {
     private refreshTokenKey = 'agri-flow-refresh-token';
 
     login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-        `${environment.authApiUrl}${Endpoints.auth.login}`,
-        credentials
-    ).pipe(
-        tap(response => {
-            localStorage.setItem(this.tokenKey, response.accessToken);       
-            localStorage.setItem(this.refreshTokenKey, response.refreshToken); 
-        })
-    );
-}
+        return this.http.post<AuthResponse>(
+            `${environment.authApiUrl}${Endpoints.auth.login}`,
+            credentials
+        ).pipe(
+            tap(response => {
+                localStorage.setItem(this.tokenKey, response.accessToken);
+                localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+            })
+        );
+    }
+
     register(data: RegisterRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(
             `${environment.authApiUrl}${Endpoints.auth.register}`,
             data
         );
     }
+
     registerBusiness(data: { businessName: string; businessEmail: string; businessPhone: string }): Observable<any> {
-    return this.http.post(
-        `${environment.authApiUrl}${Endpoints.auth.businessRegister}`,
-        data
-    );
-}
+        return this.http.post(
+            `${environment.authApiUrl}${Endpoints.auth.businessRegister}`,
+            data
+        );
+    }
 
     verifyOtp(payload: { email: string; otp: string }): Observable<any> {
         return this.http.post(
@@ -67,8 +67,8 @@ export class AuthService {
         );
     }
 
-    getProfile(): Observable<User> {
-        return this.http.get<User>(
+    getProfile(): Observable<any> {
+        return this.http.get<any>(
             `${environment.authApiUrl}${Endpoints.auth.me}`
         );
     }
@@ -81,22 +81,28 @@ export class AuthService {
         return localStorage.getItem(this.refreshTokenKey);
     }
 
-    getUser(): User | null {
+    getDecodedToken(): any {
         if (!this.isLoggedIn()) return null;
         const token = this.getToken()!;
         const payload = atob(token.split('.')[1]);
-        return JSON.parse(payload) as User;
+        return JSON.parse(payload);
+    }
+
+    getUser(): any {
+        return this.getDecodedToken();
     }
 
     isLoggedIn(): boolean {
         return !!this.getToken();
     }
 
-    getUserRoles(): Role[] {
-        return this.getUser()?.roles ?? [];
+    getUserRoles(): string[] {
+        const user = this.getUser();
+        if (!user) return [];
+        return user.role ? [user.role] : [];
     }
 
-    hasRole(role: Role): boolean {
+    hasRole(role: string): boolean {
         return this.getUserRoles().includes(role);
     }
 }

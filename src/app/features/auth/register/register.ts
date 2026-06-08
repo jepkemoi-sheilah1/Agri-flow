@@ -87,7 +87,7 @@ private router = inject(Router);
     this.errorMessage = '';
     //Destructure confirm password from the form value and rest of the data
     const { confirmPassword, ...formData } = this.registerForm.value;
-    const registerPayload = { ...formData, role: 'FARMER' as const };
+    const registerPayload = { ...formData, role: 'farmer' as const };
     this.authService.register(registerPayload).subscribe({
       next: () => {
         this.isLoading = false;
