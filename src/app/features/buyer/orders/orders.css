@@ -1,0 +1,187 @@
+.orders-page {
+  padding: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--mat-sys-on-surface);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* states */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.state-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  color: var(--mat-sys-outline);
+}
+
+.error-icon {
+  color: var(--mat-sys-error);
+}
+
+/* list */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--mat-sys-primary);
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.order-number {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.order-date {
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* fulfillments */
+.fulfillments {
+  margin-bottom: 12px;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  padding-top: 10px;
+}
+
+.fulfillment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px dashed var(--mat-sys-outline-variant);
+  font-size: 0.85rem;
+}
+
+.fulfillment-row:last-child {
+  border-bottom: none;
+}
+
+.business-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--mat-sys-on-surface);
+  font-weight: 500;
+}
+
+/* chips */
+.item-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.chip {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+}
+
+.chip.muted {
+  background: var(--mat-sys-surface-variant);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* footer */
+.order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.total {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.view-link {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.82rem;
+  color: var(--mat-sys-primary);
+  font-weight: 500;
+}
+
+/* status badges */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.status-badge.small {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+}
+
+.badge-pending    { background: var(--mat-sys-tertiary-container);    color: var(--mat-sys-on-tertiary-container); }
+.badge-confirmed  { background: var(--mat-sys-primary-container);     color: var(--mat-sys-on-primary-container); }
+.badge-processing { background: var(--mat-sys-secondary-container);   color: var(--mat-sys-on-secondary-container); }
+.badge-shipped    { background: var(--mat-sys-tertiary-container);    color: var(--mat-sys-on-tertiary-container); }
+.badge-delivered  { background: var(--mat-sys-primary-container);     color: var(--mat-sys-on-primary-container); }
+.badge-cancelled  { background: var(--mat-sys-error-container);       color: var(--mat-sys-on-error-container); }
+.badge-refunded   { background: var(--mat-sys-surface-variant);       color: var(--mat-sys-on-surface-variant); }
+.badge-default    { background: var(--mat-sys-surface-variant);       color: var(--mat-sys-on-surface-variant); }

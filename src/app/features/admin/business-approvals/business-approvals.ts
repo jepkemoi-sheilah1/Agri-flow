@@ -1,14 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { DashboardLayout } from '../../../shared/components/dashboard-layout/dashboard-layout';
-import { ProductService } from '../../../core/services/product.service';
-import { environment } from '../../../../environments/environment';
-import { Endpoints } from '../../../core/config/endpoints';
+import { BusinessService } from '../../../core/services/business.service';
+import { BusinessResponse } from '../../../core/models/kyc.model';
 
 @Component({
   selector: 'app-business-approvals',
@@ -25,10 +23,9 @@ import { Endpoints } from '../../../core/config/endpoints';
   styleUrl: './business-approvals.css',
 })
 export class BusinessApprovals implements OnInit {
-  private productService = inject(ProductService);
-  private http = inject(HttpClient);
+  private businessService = inject(BusinessService);
 
-  businesses: any[] = [];
+  businesses: BusinessResponse[] = [];
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -39,7 +36,9 @@ export class BusinessApprovals implements OnInit {
 
   loadPendingBusinesses(): void {
     this.isLoading = true;
-    this.productService.getPendingBusinesses().subscribe({
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.businessService.getPendingBusinesses().subscribe({
       next: (data) => {
         this.businesses = data;
         this.isLoading = false;
@@ -52,28 +51,26 @@ export class BusinessApprovals implements OnInit {
   }
 
   approve(businessId: string): void {
-    this.http.patch(
-      `${environment.authApiUrl}${Endpoints.business.approveBusinesses(businessId)}`,
-      {}
-    ).subscribe({
+    this.businessService.approveBusiness(businessId).subscribe({
       next: () => {
         this.successMessage = 'Business approved successfully.';
         this.loadPendingBusinesses();
       },
-      error: () => this.errorMessage = 'Failed to approve business.'
+      error: () => {
+        this.errorMessage = 'Failed to approve business.';
+      }
     });
   }
 
   reject(businessId: string): void {
-    this.http.patch(
-      `${environment.authApiUrl}${Endpoints.business.rejectBusiness(businessId)}`,
-      {}
-    ).subscribe({
+    this.businessService.rejectBusiness(businessId).subscribe({
       next: () => {
         this.successMessage = 'Business rejected.';
         this.loadPendingBusinesses();
       },
-      error: () => this.errorMessage = 'Failed to reject business.'
+      error: () => {
+        this.errorMessage = 'Failed to reject business.';
+      }
     });
   }
 }

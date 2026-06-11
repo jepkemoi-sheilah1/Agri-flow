@@ -1,0 +1,110 @@
+<app-dashboard-layout>
+  <div class="order-detail-page">
+
+    <div class="page-header">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Order Details</h1>
+    </div>
+
+    <!-- loading -->
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36" />
+        <p>Loading order details...</p>
+      </div>
+    }
+
+    <!-- error -->
+    @if (!isLoading && errorMessage) {
+      <div class="state-box">
+        <mat-icon class="state-icon error-icon">error_outline</mat-icon>
+        <p>{{ errorMessage }}</p>
+        <button mat-stroked-button (click)="goBack()">Go back</button>
+      </div>
+    }
+
+    <!-- detail -->
+    @if (!isLoading && !errorMessage && order) {
+
+      <div class="order-summary-card">
+        <div class="summary-row">
+          <span class="label">Order number</span>
+          <span class="value">#{{ order.orderNumber }}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Placed on</span>
+          <span class="value">{{ order.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Delivery address</span>
+          <span class="value">{{ order.deliveryAddress }}</span>
+        </div>
+        @if (order.deliveryNotes) {
+          <div class="summary-row">
+            <span class="label">Delivery notes</span>
+            <span class="value">{{ order.deliveryNotes }}</span>
+          </div>
+        }
+        <div class="summary-row">
+          <span class="label">Order status</span>
+          <span [class]="'status-badge ' + getStatusClass(order.status)">
+            {{ order.status }}
+          </span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Total amount</span>
+          <span class="value total">KES {{ order.totalAmount | number: '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- fulfillments -->
+      <h2 class="section-title">
+        <mat-icon>storefront</mat-icon>
+        Sellers
+      </h2>
+
+      @for (f of order.fulfillments; track f.id) {
+        <div class="fulfillment-card">
+
+          <div class="fulfillment-header">
+            <span class="business-name">{{ f.businessName }}</span>
+            <span [class]="'status-badge ' + getStatusClass(f.status)">
+              {{ f.status }}
+            </span>
+          </div>
+
+          @if (f.notes) {
+            <p class="fulfillment-notes">{{ f.notes }}</p>
+          }
+
+          <div class="items-table">
+            <div class="items-header">
+              <span>Product</span>
+              <span>Qty</span>
+              <span>Unit price</span>
+              <span>Total</span>
+            </div>
+            @for (item of f.items; track item.id) {
+              <div class="items-row">
+                <span class="product-name">
+                  @if (item.productImage) {
+                    <img [src]="item.productImage" [alt]="item.productName" class="product-thumb" />
+                  }
+                  {{ item.productName }}
+                </span>
+                <span>{{ item.quantity }} {{ item.unit }}</span>
+                <span>KES {{ item.unitPrice | number: '1.2-2' }}</span>
+                <span class="row-total">KES {{ item.totalPrice | number: '1.2-2' }}</span>
+              </div>
+            }
+          </div>
+
+        </div>
+      }
+
+    }
+
+  </div>
+</app-dashboard-layout>

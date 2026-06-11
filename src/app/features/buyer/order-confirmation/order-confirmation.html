@@ -47,9 +47,9 @@
               <div class="order-item">
                 <div class="item-info">
                   <span class="item-name">{{ item.productName }}</span>
-                  <span class="item-qty">x{{ item.quantity }} @ KES {{ item.price }}</span>
+                  <span class="item-qty">x{{ item.quantity }} @ KES {{ item.unitPrice }}</span>
                 </div>
-                <span class="item-subtotal">KES {{ item.subtotal }}</span>
+              <span class="item-subtotal">KES {{ item.totalPrice }}</span>
               </div>
             }
 
@@ -82,27 +82,13 @@
             </mat-card-content>
           </mat-card>
 
-          @if (order.shipment) {
-            <mat-card>
-              <mat-card-content>
-                <h3>Shipment</h3>
-                <mat-divider></mat-divider>
-                <div class="detail-row">
-                  <mat-icon>local_shipping</mat-icon>
-                  <span>{{ order.shipment.carrier }}</span>
-                </div>
-                <div class="detail-row">
-                  <mat-icon>tag</mat-icon>
-                  <span>Tracking: {{ order.shipment.trackingNumber }}</span>
-                </div>
-                <div class="detail-row">
-                  <mat-icon>schedule</mat-icon>
-                  <span>Est. delivery: {{ order.shipment.estimatedDelivery | date:'mediumDate' }}</span>
-                </div>
-                <div class="shipment-status">{{ order.shipment.status }}</div>
-              </mat-card-content>
-            </mat-card>
-          }
+         @for (f of order.fulfillments; track f.id) {
+  <div class="detail-row">
+    <mat-icon>storefront</mat-icon>
+    <span>{{ f.businessName }}</span>
+    <span [class]="'status-badge ' + getStatusClass(f.status)">{{ f.status }}</span>
+  </div>
+         }
 
           <!-- Actions -->
           <div class="actions">

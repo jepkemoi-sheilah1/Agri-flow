@@ -1,0 +1,199 @@
+.order-detail-page {
+  padding: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+}
+
+/* states */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.state-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  color: var(--mat-sys-outline);
+}
+
+.error-icon {
+  color: var(--mat-sys-error);
+}
+
+/* summary card */
+.order-summary-card {
+  background: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  padding-bottom: 10px;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.label {
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 500;
+}
+
+.value {
+  color: var(--mat-sys-on-surface);
+  font-weight: 400;
+}
+
+.value.total {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--mat-sys-primary);
+}
+
+/* section title */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  margin: 0 0 16px;
+}
+
+.section-title mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+/* fulfillment card */
+.fulfillment-card {
+  background: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.fulfillment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.business-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.fulfillment-notes {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0 0 14px;
+}
+
+/* items table */
+.items-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.items-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 10px 14px;
+  background: var(--mat-sys-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.items-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  align-items: center;
+}
+
+.product-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.product-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--mat-sys-surface-variant);
+}
+
+.row-total {
+  font-weight: 600;
+  color: var(--mat-sys-primary);
+}
+
+/* status badges */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-pending    { background: var(--mat-sys-tertiary-container);  color: var(--mat-sys-on-tertiary-container); }
+.badge-confirmed  { background: var(--mat-sys-primary-container);   color: var(--mat-sys-on-primary-container); }
+.badge-processing { background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); }
+.badge-shipped    { background: var(--mat-sys-tertiary-container);  color: var(--mat-sys-on-tertiary-container); }
+.badge-delivered  { background: var(--mat-sys-primary-container);   color: var(--mat-sys-on-primary-container); }
+.badge-cancelled  { background: var(--mat-sys-error-container);     color: var(--mat-sys-on-error-container); }
+.badge-refunded   { background: var(--mat-sys-surface-variant);     color: var(--mat-sys-on-surface-variant); }
+.badge-default    { background: var(--mat-sys-surface-variant);     color: var(--mat-sys-on-surface-variant); }
+

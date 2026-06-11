@@ -7,31 +7,37 @@ export interface OrderItemResponse {
     id: string;
     productId: string;
     productName: string;
+    productImage: string;
+    businessId: string;
     quantity: number;
-    price: number;
-    subtotal: number;
+    unitPrice: number;
+    totalPrice: number;
+    unit: string;
+    orderNumber: string;
 }
 
-export interface ShipmentResponse {
+export interface FulfillmentResponse {
     id: string;
+    orderId: string;
+    businessId: string;
+    businessName: string;
     status: string;
-    trackingNumber: string;
-    carrier: string;
-    estimatedDelivery: Date;
-    deliveredAt?: Date;
+    notes: string;
+    items: OrderItemResponse[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface OrderResponse {
     id: string;
-    userId: string;
-    businessId: string;
+    buyerId: string;
     orderNumber: string;
     status: string;
     totalAmount: number;
     deliveryAddress: string;
     deliveryNotes?: string;
     items: OrderItemResponse[];
-    shipment: ShipmentResponse;
-    createdAt: Date;
-    updatedAt: Date;
+    fulfillments: FulfillmentResponse[];
+    createdAt: string;
+    updatedAt: string;
 }

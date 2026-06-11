@@ -10,5 +10,14 @@ export interface Kyc {
     rejectionReason?: string; // reason for rejection if status is REJECTED
     submittedAt: Date;
 }
-
+export interface BusinessResponse {
+    id: string;
+    userId: string;
+    businessName: string;
+    businessEmail: string;
+    businessPhone: string;
+    approvalStatus: string;
+    walletBalance: number;
+    joinDate: Date;
+}
    

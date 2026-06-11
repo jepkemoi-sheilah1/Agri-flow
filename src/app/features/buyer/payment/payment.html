@@ -120,7 +120,7 @@
               @for (item of order.items; track item.id) {
                 <div class="summary-item">
                   <span>{{ item.productName }} x{{ item.quantity }}</span>
-                  <span>KES {{ item.subtotal }}</span>
+                  <span>KES {{ item.totalPrice }}</span>
                 </div>
               }
             }

@@ -71,4 +71,18 @@ export class OrderConfirmation implements OnInit {
   get totalItems(): number {
     return this.order?.items?.length ?? 0;
   }
+  getStatusClass(status: string): string {
+  const map: Record<string, string> = {
+    PENDING:    'badge-pending',
+    CONFIRMED:  'badge-confirmed',
+    PROCESSING: 'badge-processing',
+    SHIPPED:    'badge-shipped',
+    DELIVERED:  'badge-delivered',
+    CANCELLED:  'badge-cancelled',
+    REFUNDED:   'badge-refunded',
+  };
+  return map[status?.toUpperCase()] ?? 'badge-default';
+}
+
+  
 }

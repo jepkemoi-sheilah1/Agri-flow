@@ -1,0 +1,88 @@
+<app-dashboard-layout>
+  <div class="orders-page">
+
+    <div class="page-header">
+      <h1>My Orders</h1>
+      <p class="subtitle">Track and manage your purchases</p>
+    </div>
+
+    <!-- loading -->
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36" />
+        <p>Loading your orders...</p>
+      </div>
+    }
+
+    <!-- error -->
+    @if (!isLoading && errorMessage) {
+      <div class="state-box">
+        <mat-icon class="state-icon error-icon">error_outline</mat-icon>
+        <p>{{ errorMessage }}</p>
+        <button mat-stroked-button (click)="loadOrders()">Try again</button>
+      </div>
+    }
+
+    <!-- empty -->
+    @if (!isLoading && !errorMessage && orders.length === 0) {
+      <div class="state-box">
+        <mat-icon class="state-icon">shopping_bag</mat-icon>
+        <p>You haven't placed any orders yet.</p>
+        <button mat-flat-button (click)="goToFeed()">Browse products</button>
+      </div>
+    }
+
+    <!-- orders list -->
+    @if (!isLoading && !errorMessage && orders.length > 0) {
+      <div class="orders-list">
+        @for (order of orders; track order.id) {
+          <div class="order-card" (click)="goToDetail(order.id)">
+
+            <div class="order-top">
+              <div class="order-meta">
+                <span class="order-number">#{{ order.orderNumber }}</span>
+                <span class="order-date">{{ order.createdAt | date: 'dd MMM yyyy' }}</span>
+              </div>
+              <span [class]="'status-badge ' + getStatusClass(order.status)">
+                {{ order.status }}
+              </span>
+            </div>
+
+            <div class="fulfillments">
+              @for (f of order.fulfillments; track f.id) {
+                <div class="fulfillment-row">
+                  <span class="business-name">
+                    <mat-icon inline>storefront</mat-icon>
+                    {{ f.businessName }}
+                  </span>
+                  <span [class]="'status-badge small ' + getStatusClass(f.status)">
+                    {{ f.status }}
+                  </span>
+                </div>
+              }
+            </div>
+
+            <div class="item-chips">
+              @for (item of order.items.slice(0, 3); track item.id) {
+                <span class="chip">{{ item.productName }} ×{{ item.quantity }}</span>
+              }
+              @if (order.items.length > 3) {
+                <span class="chip muted">+{{ order.items.length - 3 }} more</span>
+              }
+            </div>
+
+            <div class="order-footer">
+              <span class="total">KES {{ order.totalAmount | number: '1.2-2' }}</span>
+              <span class="view-link">
+                View details
+                <mat-icon inline>arrow_forward</mat-icon>
+              </span>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</app-dashboard-layout>

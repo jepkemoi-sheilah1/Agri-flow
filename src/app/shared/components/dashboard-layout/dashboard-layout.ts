@@ -24,24 +24,22 @@ export class DashboardLayout {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  get bottomNavItems() {
-    return this.menuItems.slice(0, 5);
+    this.authService.logout().subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login'])
+    });
   }
 
   get menuItems() {
-    const role = this.user?.roles?.[0] as string;
+    const role = this.user?.role as string;
 
     if (role === Role.SELLER) {
       return [
-        { label: 'Home',            icon: 'home',         route: '/seller' },
-        { label: 'My Products',     icon: 'inventory_2',  route: '/seller/products' },
-        { label: 'Create Product',  icon: 'add_box',      route: '/seller/create-product' },
-        { label: 'Business Orders', icon: 'receipt_long', route: '/seller/orders' },
-        { label: 'Profile',         icon: 'person',       route: '/seller/profile' },
+        { label: 'Home',            icon: 'home',          route: '/seller' },
+        { label: 'My Products',     icon: 'inventory_2',   route: '/seller/products' },
+        { label: 'Create Product',  icon: 'add_box',       route: '/seller/create-product' },
+        { label: 'Orders',          icon: 'receipt_long',  route: '/seller/orders' },
+        { label: 'Profile',         icon: 'person',        route: '/seller/profile' },
       ];
     }
 
@@ -65,13 +63,18 @@ export class DashboardLayout {
       ];
     }
 
+    // FARMER (default buyer menu)
     return [
-      { label: 'Home',           icon: 'home',         route: '/buyer' },
-      { label: 'Browse Products',icon: 'storefront',   route: '/buyer/feed' },
-      { label: 'Cart',             icon: 'shopping_cart', route: '/buyer/cart' },
-      { label: 'My Orders',      icon: 'shopping_bag', route: '/buyer/orders' },
-      { label: 'Start Selling',  icon: 'agriculture',  route: '/seller/register-business' },
-      { label: 'Profile',        icon: 'person',       route: '/buyer/profile' },
+      { label: 'Home',          icon: 'home',          route: '/buyer' },
+      { label: 'Browse',        icon: 'storefront',    route: '/buyer/feed' },
+      { label: 'Cart',          icon: 'shopping_cart', route: '/buyer/cart' },
+      { label: 'My Orders',     icon: 'shopping_bag',  route: '/buyer/orders' },
+      { label: 'Start Selling', icon: 'agriculture',   route: '/seller/business-register' },
+      { label: 'Profile',       icon: 'person',        route: '/buyer/profile' },
     ];
+  }
+
+  get bottomNavItems() {
+    return this.menuItems.slice(0, 5);
   }
 }
