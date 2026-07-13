@@ -30,3 +30,13 @@ export interface RegisterBusinessRequest {
   county: string;
   businessProfile?: string;
 }
+
+export interface User {
+  id: string;
+  username: string;
+  firstName: string;
+  surName: string;
+  email: string;
+  phoneNumber: string;
+  role: 'FARMER' | 'BUYER' | 'ADMIN';
+}

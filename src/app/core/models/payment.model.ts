@@ -17,3 +17,29 @@ export interface PaymentResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface WalletResponse {
+  id: string;
+  userId: string;
+  balance: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WalletTransactionResponse {
+  id: string;
+  walletId: string;
+  amount: number;
+  type: string;
+  description: string;
+  createdAt: string;
+}
+
+export interface PayoutResponse {
+  id: string;
+  walletId: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
