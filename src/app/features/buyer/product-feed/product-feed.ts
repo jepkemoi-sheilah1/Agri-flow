@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { DashboardLayout } from '../../../shared/components/dashboard-layout/dashboard-layout';
 import { ProductService } from '../../../core/services/product.service';
-import { Product } from '../../../core/models/product.model';
+import { ProductResponse } from '../../../core/models/product.model';
 
 @Component({
   selector: 'app-product-feed',
@@ -31,8 +31,8 @@ import { Product } from '../../../core/models/product.model';
 export class ProductFeed implements OnInit {
   private productService = inject(ProductService);
 
-  products: Product[] = [];
-  filteredProducts: Product[] = [];
+  products: ProductResponse[] = [];
+filteredProducts: ProductResponse[] = [];
   isLoading = false;
   errorMessage = '';
   searchKeyword = '';

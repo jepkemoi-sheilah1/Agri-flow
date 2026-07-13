@@ -1,23 +1,32 @@
 import { KycStatus } from './enums/kyc-status.enum';
 
 export interface Kyc {
-    id: string; 
-    userId: string;
-    documentType: string;
-    documentUrl: string;
-    status: KycStatus;
-    reviewedBy?: string; // admin who reviewed the KYC
-    rejectionReason?: string; // reason for rejection if status is REJECTED
-    submittedAt: Date;
+  id: string;
+  userId: string;
+  documentType: string;
+  documentUrl: string;
+  status: KycStatus;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  submittedAt: Date;
 }
+
 export interface BusinessResponse {
-    id: string;
-    userId: string;
-    businessName: string;
-    businessEmail: string;
-    businessPhone: string;
-    approvalStatus: string;
-    walletBalance: number;
-    joinDate: Date;
+  id: string;
+  userId: string;
+  businessName: string;
+  businessEmail: string;
+  businessPhone: string;
+  approvalStatus: string;
+  businessProfile?: string;
+  county: string;
+  joinDate: Date;
 }
-   
+
+export interface RegisterBusinessRequest {
+  businessName: string;
+  businessEmail: string;
+  businessPhone: string;
+  county: string;
+  businessProfile?: string;
+}

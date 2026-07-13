@@ -15,7 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { DashboardLayout } from '../../../shared/components/dashboard-layout/dashboard-layout';
 import { ProductService } from '../../../core/services/product.service';
-import { Category, Product } from '../../../core/models/product.model';
+import { Category, ProductResponse } from '../../../core/models/product.model';
 
 @Component({
   selector: 'app-create-product',

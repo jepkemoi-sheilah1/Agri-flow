@@ -1,65 +1,91 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product, Category, CreateProductRequest } from '../models/product.model';
+import {
+  ProductResponse,
+  Category,
+  CreateProductRequest,
+  UpdateProductRequest
+} from '../models/product.model';
 import { environment } from '../../../environments/environment';
 import { Endpoints } from '../config/endpoints';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-    private http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-    getCategories(): Observable<Category[]> {
-        return this.http.get<Category[]>(
-            `${environment.productApiUrl}${Endpoints.product.categories}`
-        );
-    }
-
-    createProduct(data: CreateProductRequest): Observable<Product> {
-        return this.http.post<Product>(
-            `${environment.productApiUrl}${Endpoints.product.create}`,
-            data
-        );
-    }
-
-    uploadProductImage(productId: string, file: File): Observable<any> {
-        const formData = new FormData();
-        formData.append('file', file);
-        return this.http.post(
-            `${environment.productApiUrl}${Endpoints.product.uploadImage(productId)}`,
-            formData
-        );
-    }
-
-    getProductFeed(): Observable<Product[]> {
-        return this.http.get<Product[]>(
-            `${environment.productApiUrl}${Endpoints.product.feed}`
-        );
-    }
-
-    getMyProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(
-            `${environment.productApiUrl}${Endpoints.product.myProducts}`
-        );
-    }
-
-   getPendingBusinesses(): Observable<any[]> {
-    return this.http.get<any[]>(
-        `${environment.productApiUrl}${Endpoints.business.pending}`
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(
+      `${environment.productApiUrl}${Endpoints.product.categories}`
     );
-}
+  }
 
-    filterByCategory(categoryId: string): Observable<Product[]> {
-        return this.http.get<Product[]>(
-            `${environment.productApiUrl}${Endpoints.product.filterByCategory}`,
-            { params: { categoryId } }
-        );
-    }
+  createProduct(data: CreateProductRequest): Observable<ProductResponse> {
+    return this.http.post<ProductResponse>(
+      `${environment.productApiUrl}${Endpoints.product.create}`, data
+    );
+  }
 
-    searchProducts(keyword: string): Observable<Product[]> {
-        return this.http.get<Product[]>(
-            `${environment.productApiUrl}${Endpoints.product.search}`,
-            { params: { keyword } }
-        );
-    }
+  getProductById(id: string): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(
+      `${environment.productApiUrl}${Endpoints.product.getById(id)}`
+    );
+  }
+
+  updateProduct(id: string, data: UpdateProductRequest): Observable<ProductResponse> {
+    return this.http.patch<ProductResponse>(
+      `${environment.productApiUrl}${Endpoints.product.update(id)}`, data
+    );
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.productApiUrl}${Endpoints.product.delete(id)}`
+    );
+  }
+
+  markOutOfStock(id: string): Observable<ProductResponse> {
+    return this.http.patch<ProductResponse>(
+      `${environment.productApiUrl}${Endpoints.product.markOutOfStock(id)}`, {}
+    );
+  }
+
+  uploadProductImage(productId: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(
+      `${environment.productApiUrl}${Endpoints.product.uploadImage(productId)}`, formData
+    );
+  }
+
+  getProductFeed(): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
+      `${environment.productApiUrl}${Endpoints.product.feed}`
+    );
+  }
+
+  getMyProducts(): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
+      `${environment.productApiUrl}${Endpoints.product.myProducts}`
+    );
+  }
+
+  getProductsByCategory(categoryId: string): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
+      `${environment.productApiUrl}${Endpoints.product.byCategory(categoryId)}`
+    );
+  }
+
+  getBusinessProducts(businessId: string): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
+      `${environment.productApiUrl}${Endpoints.product.byBusiness(businessId)}`
+    );
+  }
+
+  searchProducts(keyword: string): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
+      `${environment.productApiUrl}${Endpoints.product.search}`,
+      { params: { keyword } }
+    );
+  }
 }

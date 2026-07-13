@@ -3,41 +3,57 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Endpoints } from '../config/endpoints';
-import { CheckoutRequest, OrderResponse } from '../models/order.model';
+import {
+  CheckoutRequest,
+  OrderResponse,
+  SellerOrderResponse,
+  UpdateFulfillmentRequest,
+  RestoreRequest
+} from '../models/order.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-    private http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-    checkout(data: CheckoutRequest): Observable<OrderResponse> {
-        return this.http.post<OrderResponse>(
-            `${environment.orderApiUrl}${Endpoints.order.checkout}`,
-            data
-        );
-    }
+  checkout(data: CheckoutRequest): Observable<OrderResponse> {
+    return this.http.post<OrderResponse>(
+      `${environment.orderApiUrl}${Endpoints.order.checkout}`, data
+    );
+  }
 
-    getOrder(id: string): Observable<OrderResponse> {
-        return this.http.get<OrderResponse>(
-            `${environment.orderApiUrl}${Endpoints.order.getById(id)}`
-        );
-    }
+  getOrder(id: string): Observable<OrderResponse> {
+    return this.http.get<OrderResponse>(
+      `${environment.orderApiUrl}${Endpoints.order.getById(id)}`
+    );
+  }
 
-    getMyOrders(): Observable<OrderResponse[]> {
-        return this.http.get<OrderResponse[]>(
-            `${environment.orderApiUrl}${Endpoints.order.myOrders}`
-        );
-    }
+  getMyOrders(): Observable<OrderResponse[]> {
+    return this.http.get<OrderResponse[]>(
+      `${environment.orderApiUrl}${Endpoints.order.myOrders}`
+    );
+  }
 
-    getBusinessOrders(businessId: string): Observable<OrderResponse[]> {
-        return this.http.get<OrderResponse[]>(
-            `${environment.orderApiUrl}${Endpoints.order.businessOrders(businessId)}`
-        );
-    }
+  getSellerOrders(): Observable<SellerOrderResponse[]> {
+    return this.http.get<SellerOrderResponse[]>(
+      `${environment.orderApiUrl}${Endpoints.order.sellerOrders}`
+    );
+  }
 
-    updateStatus(id: string, status: string): Observable<OrderResponse> {
-        return this.http.patch<OrderResponse>(
-            `${environment.orderApiUrl}${Endpoints.order.updateStatus(id)}`,
-            { status }
-        );
-    }
+  getSellerOrderDetail(orderId: string): Observable<SellerOrderResponse> {
+    return this.http.get<SellerOrderResponse>(
+      `${environment.orderApiUrl}${Endpoints.order.sellerOrderDetail(orderId)}`
+    );
+  }
+
+  updateFulfillmentStatus(orderId: string, data: UpdateFulfillmentRequest): Observable<SellerOrderResponse> {
+    return this.http.patch<SellerOrderResponse>(
+      `${environment.orderApiUrl}${Endpoints.order.updateFulfillmentStatus(orderId)}`, data
+    );
+  }
+
+  restoreOrderToCart(data: RestoreRequest): Observable<any> {
+    return this.http.post<any>(
+      `${environment.orderApiUrl}${Endpoints.order.restore}`, data
+    );
+  }
 }
