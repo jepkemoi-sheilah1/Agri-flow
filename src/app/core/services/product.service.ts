@@ -16,7 +16,7 @@ export class ProductService {
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(
-      `${environment.productApiUrl}${Endpoints.product.categories}`
+      `${environment.productApiUrl}${Endpoints.category.getAll}`
     );
   }
 
@@ -54,7 +54,7 @@ export class ProductService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(
-      `${environment.productApiUrl}${Endpoints.product.uploadImage(productId)}`, formData
+      `${environment.productApiUrl}${Endpoints.product.addImage(productId)}`, formData
     );
   }
 
