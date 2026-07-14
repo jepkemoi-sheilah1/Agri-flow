@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,9 +30,10 @@ import { ProductResponse } from '../../../core/models/product.model';
 })
 export class ProductFeed implements OnInit {
   private productService = inject(ProductService);
+  private cdr = inject(ChangeDetectorRef);
 
   products: ProductResponse[] = [];
-filteredProducts: ProductResponse[] = [];
+  filteredProducts: ProductResponse[] = [];
   isLoading = false;
   errorMessage = '';
   searchKeyword = '';
@@ -48,10 +49,13 @@ filteredProducts: ProductResponse[] = [];
         this.products = products;
         this.filteredProducts = products;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err) => {
+        console.log('Feed error:', err);
         this.errorMessage = 'Failed to load products. Please try again.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -70,5 +74,10 @@ filteredProducts: ProductResponse[] = [];
   clearSearch(): void {
     this.searchKeyword = '';
     this.filteredProducts = this.products;
+  }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
   }
 }

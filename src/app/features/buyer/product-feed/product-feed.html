@@ -57,7 +57,9 @@
           <mat-card class="product-card">
             <div class="product-image">
               @if (product.images && product.images.length > 0) {
-                <img [src]="product.images[0]" [alt]="product.productName" />
+                <img [src]="product.images[0]"
+                     [alt]="product.productName"
+                     (error)="onImageError($event)" />
               } @else {
                 <div class="no-image">
                   <mat-icon>image_not_supported</mat-icon>
