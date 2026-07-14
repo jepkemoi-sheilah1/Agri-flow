@@ -5,7 +5,14 @@ import { Role } from './core/models/enums/role.enum';
 
 export const routes: Routes = [
 
-  // public
+  // landing page — public
+  {
+    path: '',
+    loadComponent: () => import('./public/landing/landing.component')
+      .then(m => m.LandingComponent)
+  },
+
+  // public auth
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login')
@@ -57,18 +64,34 @@ export const routes: Routes = [
       .then(m => m.Checkout)
   },
   {
+    path: 'buyer/orders',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/buyer/orders/orders')
+      .then(m => m.Orders)
+  },
+  {
+    path: 'buyer/orders/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/buyer/order-detail/order-detail')
+      .then(m => m.OrderDetail)
+  },
+  {
     path: 'buyer/payment',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    canActivate: [authGuard],
     loadComponent: () => import('./features/buyer/payment/payment')
       .then(m => m.Payment)
   },
   {
     path: 'buyer/order-confirmation',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    canActivate: [authGuard],
     loadComponent: () => import('./features/buyer/order-confirmation/order-confirmation')
       .then(m => m.OrderConfirmation)
+  },
+  {
+    path: 'buyer/profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/buyer/profile/profile')
+      .then(m => m.Profile)
   },
 
   // seller
@@ -92,6 +115,18 @@ export const routes: Routes = [
     data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/business-register/business-register')
       .then(m => m.BusinessRegister)
+  },
+  {
+    path: 'seller/my-products',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/my-products/my-products')
+      .then(m => m.MyProducts)
+  },
+  {
+    path: 'seller/orders',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/business-orders/business-orders')
+      .then(m => m.BusinessOrders)
   },
 
   // admin
@@ -118,55 +153,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/super-admin/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
-  // buyer routes
-{
-  path: 'buyer/orders',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/orders/orders')
-    .then(m => m.Orders)
-},
-{
-  path: 'buyer/orders/:id',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/order-detail/order-detail')
-    .then(m => m.OrderDetail)
-},
-{
-  path: 'buyer/payment',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/payment/payment')
-    .then(m => m.Payment)
-},
-{
-  path: 'buyer/order-confirmation',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/order-confirmation/order-confirmation')
-    .then(m => m.OrderConfirmation)
-},
-{
-  path: 'buyer/profile',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/profile/profile')
-    .then(m => m.Profile)
-},
-
-// seller routes
-{
-  path: 'seller/my-products',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/seller/my-products/my-products')
-    .then(m => m.MyProducts)
-},
-{
-  path: 'seller/orders',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/seller/business-orders/business-orders')
-    .then(m => m.BusinessOrders)
-},
 
   // fallback
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: ''
   }
 ];

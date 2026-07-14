@@ -29,28 +29,59 @@
       <div class="delivery-section">
         <mat-card>
           <mat-card-content>
-            <h3>Delivery Details</h3>
+            <h3>
+              <mat-icon>local_shipping</mat-icon>
+              Delivery Details
+            </h3>
 
             <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
 
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>County</mat-label>
+                  <input matInput formControlName="county"
+                    placeholder="e.g. Nairobi" />
+                  @if (checkoutForm.get('county')?.invalid &&
+                       checkoutForm.get('county')?.touched) {
+                    <mat-error>County is required</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Town / Area</mat-label>
+                  <input matInput formControlName="town"
+                    placeholder="e.g. Westlands" />
+                  @if (checkoutForm.get('town')?.invalid &&
+                       checkoutForm.get('town')?.touched) {
+                    <mat-error>Town is required</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Delivery address</mat-label>
-                <textarea matInput formControlName="deliveryAddress"
-                  rows="3"
-                  placeholder="Enter your full delivery address...">
+                <mat-label>Street Address / Estate</mat-label>
+                <textarea matInput formControlName="streetAddress"
+                  rows="2"
+                  placeholder="e.g. Kilimani Road, Apt 4B">
                 </textarea>
                 <mat-icon matSuffix>location_on</mat-icon>
-                @if (checkoutForm.get('deliveryAddress')?.invalid &&
-                     checkoutForm.get('deliveryAddress')?.touched) {
-                  <mat-error>Please enter a valid delivery address</mat-error>
+                @if (checkoutForm.get('streetAddress')?.invalid &&
+                     checkoutForm.get('streetAddress')?.touched) {
+                  <mat-error>Please enter a valid street address</mat-error>
                 }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Landmark (optional)</mat-label>
+                <input matInput formControlName="landmark"
+                  placeholder="e.g. Next to Total petrol station" />
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Delivery notes (optional)</mat-label>
                 <textarea matInput formControlName="deliveryNotes"
                   rows="2"
-                  placeholder="Any special instructions...">
+                  placeholder="Any special instructions for the delivery person...">
                 </textarea>
               </mat-form-field>
 

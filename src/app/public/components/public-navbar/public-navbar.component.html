@@ -1,0 +1,49 @@
+
+<header class="navbar" [class.scrolled]="isScrolled()">
+  <div class="navbar-inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="logo" (click)="closeMenu()">
+      <div class="logo-mark">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2C16 2 6 8 6 18C6 23.5 10.5 28 16 28C21.5 28 26 23.5 26 18C26 8 16 2 16 2Z" fill="#2D6A2D"/>
+          <path d="M16 10C16 10 11 14 11 19C11 21.8 13.2 24 16 24C18.8 24 21 21.8 21 19C21 14 16 10 16 10Z" fill="#E8A838"/>
+          <path d="M16 16V28" stroke="#F5F0E8" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">AgriFlow</span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="desktop-nav">
+      <a routerLink="/browse" routerLinkActive="nav-active" class="nav-link">Browse</a>
+      <a routerLink="/sellers" routerLinkActive="nav-active" class="nav-link">Sellers</a>
+      <a routerLink="/about" routerLinkActive="nav-active" class="nav-link">About</a>
+    </nav>
+
+    <!-- Desktop CTAs -->
+    <div class="desktop-cta">
+      <a routerLink="/login" class="btn-ghost">Sign in</a>
+      <a routerLink="/register" class="btn-primary">Start Selling</a>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="menuOpen()">
+    <a routerLink="/browse" class="mobile-link" (click)="closeMenu()">Browse Products</a>
+    <a routerLink="/sellers" class="mobile-link" (click)="closeMenu()">Our Sellers</a>
+    <a routerLink="/about" class="mobile-link" (click)="closeMenu()">About</a>
+    <div class="mobile-divider"></div>
+    <a routerLink="/login" class="mobile-link" (click)="closeMenu()">Sign in</a>
+    <a routerLink="/register" class="mobile-cta" (click)="closeMenu()">Start Selling →</a>
+  </div>
+
+</header>
