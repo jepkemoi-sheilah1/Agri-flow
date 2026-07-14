@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,7 +24,7 @@ type PaymentStage = 'form' | 'pending' | 'success' | 'failed';
   selector: 'app-payment',
   standalone: true,
   imports: [
-    CommonModule,
+    DecimalPipe,
     RouterLink,
     ReactiveFormsModule,
     DashboardLayout,
@@ -44,6 +44,7 @@ export class Payment implements OnInit, OnDestroy {
   private router = inject(Router);
   private paymentService = inject(PaymentService);
   private orderService = inject(OrderService);
+  private cdr = inject(ChangeDetectorRef);
 
   orderId: string = '';
   totalAmount: number = 0;
@@ -58,7 +59,7 @@ export class Payment implements OnInit, OnDestroy {
 
   private pollSubscription: Subscription | null = null;
   private readonly POLL_INTERVAL_MS = 5000;
-  private readonly MAX_POLL_ATTEMPTS = 24; // 2 minutes
+  private readonly MAX_POLL_ATTEMPTS = 24;
   private pollAttempts = 0;
 
   paymentForm: FormGroup = this.fb.group({
@@ -90,10 +91,12 @@ export class Payment implements OnInit, OnDestroy {
         this.order = order;
         this.totalAmount = order.totalAmount;
         this.isLoadingOrder = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoadingOrder = false;
         this.errorMessage = 'Could not load order details. Please go back and try again.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -118,11 +121,13 @@ export class Payment implements OnInit, OnDestroy {
         this.latestPayment = payment;
         this.isSubmitting = false;
         this.stage = 'pending';
+        this.cdr.detectChanges();
         this.startPolling();
       },
       error: (err) => {
         this.isSubmitting = false;
         this.errorMessage = err?.error?.message ?? 'Failed to initiate payment. Please try again.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -136,7 +141,6 @@ export class Payment implements OnInit, OnDestroy {
     ).subscribe({
       next: (payments) => {
         this.pollAttempts++;
-
         if (!payments || payments.length === 0) return;
 
         const latest = payments[payments.length - 1];
@@ -145,6 +149,7 @@ export class Payment implements OnInit, OnDestroy {
         if (latest.status === 'COMPLETED') {
           this.stopPolling();
           this.stage = 'success';
+          this.cdr.detectChanges();
           setTimeout(() => {
             this.router.navigate(['/buyer/order-confirmation'], {
               state: { orderId: this.orderId, orderNumber: this.orderNumber, payment: latest }
@@ -154,16 +159,19 @@ export class Payment implements OnInit, OnDestroy {
           this.stopPolling();
           this.stage = 'failed';
           this.errorMessage = latest.failureReason ?? 'Payment was not completed. Please try again.';
+          this.cdr.detectChanges();
         } else if (this.pollAttempts >= this.MAX_POLL_ATTEMPTS) {
           this.stopPolling();
           this.stage = 'failed';
           this.errorMessage = 'Payment timed out. Please check your M-Pesa and try again.';
+          this.cdr.detectChanges();
         }
       },
       error: () => {
         this.stopPolling();
         this.stage = 'failed';
         this.errorMessage = 'Could not verify payment status. Please contact support.';
+        this.cdr.detectChanges();
       }
     });
   }

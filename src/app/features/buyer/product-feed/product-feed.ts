@@ -9,7 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { DashboardLayout } from '../../../shared/components/dashboard-layout/dashboard-layout';
 import { ProductService } from '../../../core/services/product.service';
-import { ProductResponse } from '../../../core/models/product.model';
+import { ProductResponse } from '../../../core/models/product.model';import { CartService } from '../../../core/services/cart.service';
+import { AddToCartRequest } from '../../../core/models/cart.model';
 
 @Component({
   selector: 'app-product-feed',
@@ -31,6 +32,8 @@ import { ProductResponse } from '../../../core/models/product.model';
 export class ProductFeed implements OnInit {
   private productService = inject(ProductService);
   private cdr = inject(ChangeDetectorRef);
+  private cartService = inject(CartService);
+isAddingToCart: { [productId: string]: boolean } = {};
 
   products: ProductResponse[] = [];
   filteredProducts: ProductResponse[] = [];
@@ -80,4 +83,18 @@ export class ProductFeed implements OnInit {
     const img = event.target as HTMLImageElement;
     img.style.display = 'none';
   }
+  addToCart(productId: string): void {
+  this.isAddingToCart[productId] = true;
+  const payload: AddToCartRequest = { productId, quantity: 1 };
+  this.cartService.addToCart(payload).subscribe({
+    next: () => {
+      this.isAddingToCart[productId] = false;
+      this.cdr.detectChanges();
+    },
+    error: () => {
+      this.isAddingToCart[productId] = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { OrderResponse } from '../../../core/models/order.model';
   selector: 'app-order-confirmation',
   standalone: true,
   imports: [
-    CommonModule,
+    DecimalPipe,
     RouterLink,
     DashboardLayout,
     MatCardModule,
@@ -31,6 +31,7 @@ import { OrderResponse } from '../../../core/models/order.model';
 export class OrderConfirmation implements OnInit {
   private router = inject(Router);
   private orderService = inject(OrderService);
+  private cdr = inject(ChangeDetectorRef);
 
   orderId: string = '';
   orderNumber: string = '';
@@ -60,10 +61,12 @@ export class OrderConfirmation implements OnInit {
       next: (order) => {
         this.order = order;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoading = false;
         this.errorMessage = 'Could not load order details.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -71,18 +74,17 @@ export class OrderConfirmation implements OnInit {
   get totalItems(): number {
     return this.order?.items?.length ?? 0;
   }
-  getStatusClass(status: string): string {
-  const map: Record<string, string> = {
-    PENDING:    'badge-pending',
-    CONFIRMED:  'badge-confirmed',
-    PROCESSING: 'badge-processing',
-    SHIPPED:    'badge-shipped',
-    DELIVERED:  'badge-delivered',
-    CANCELLED:  'badge-cancelled',
-    REFUNDED:   'badge-refunded',
-  };
-  return map[status?.toUpperCase()] ?? 'badge-default';
-}
 
-  
+  getStatusClass(status: string): string {
+    const map: Record<string, string> = {
+      PENDING:    'badge-pending',
+      CONFIRMED:  'badge-confirmed',
+      PROCESSING: 'badge-processing',
+      SHIPPED:    'badge-shipped',
+      DELIVERED:  'badge-delivered',
+      CANCELLED:  'badge-cancelled',
+      REFUNDED:   'badge-refunded',
+    };
+    return map[status?.toUpperCase()] ?? 'badge-default';
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,7 @@ import { CartResponse } from '../../../core/models/cart.model';
 })
 export class Cart implements OnInit {
   private cartService = inject(CartService);
+  private cdr = inject(ChangeDetectorRef);
 
   cart: CartResponse | null = null;
   isLoading = false;
@@ -42,10 +43,12 @@ export class Cart implements OnInit {
       next: (cart) => {
         this.cart = cart;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Failed to load cart.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

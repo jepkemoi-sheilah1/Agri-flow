@@ -1,1 +1,140 @@
-<p>profile works!</p>
+<app-dashboard-layout>
+  <div class="profile-page">
+
+    <div class="page-header">
+      <h1>My Profile</h1>
+      <p>Manage your account details</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Loading profile...</p>
+      </div>
+    }
+
+    @if (!isLoading && user) {
+
+      <!-- Avatar section -->
+      <mat-card class="avatar-card">
+        <mat-card-content>
+          <div class="avatar-section">
+            <div class="avatar">
+              @if (user.profilePicture) {
+                <img [src]="user.profilePicture" [alt]="user.firstName" />
+              } @else {
+                <mat-icon class="avatar-icon">person</mat-icon>
+              }
+            </div>
+            <div class="avatar-info">
+              <h2>{{ user.firstName }} {{ user.surName }}</h2>
+              <p class="role-badge">{{ user.role }}</p>
+              <p class="email">{{ user.email }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-tab-group class="profile-tabs">
+
+        <!-- Profile tab -->
+        <mat-tab label="Edit Profile">
+          <mat-card class="form-card">
+            <mat-card-content>
+              <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+
+                <div class="form-row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="surName" />
+                  </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Middle Name</mat-label>
+                  <input matInput formControlName="middleName" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Username</mat-label>
+                  <input matInput formControlName="username" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" type="email" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Phone Number</mat-label>
+                  <input matInput formControlName="phoneNumber" />
+                </mat-form-field>
+
+                <button mat-flat-button type="submit" class="save-btn"
+                  [disabled]="isSaving || profileForm.invalid">
+                  @if (isSaving) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  } @else {
+                    <mat-icon>save</mat-icon>
+                    Save Changes
+                  }
+                </button>
+
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+
+        <!-- Password tab -->
+        <mat-tab label="Change Password">
+          <mat-card class="form-card">
+            <mat-card-content>
+              <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Current Password</mat-label>
+                  <input matInput formControlName="oldPassword" type="password" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>New Password</mat-label>
+                  <input matInput formControlName="newPassword" type="password" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput formControlName="confirmNewPassword" type="password" />
+                </mat-form-field>
+
+                <button mat-flat-button type="submit" class="save-btn"
+                  [disabled]="isChangingPassword || passwordForm.invalid">
+                  @if (isChangingPassword) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  } @else {
+                    <mat-icon>lock</mat-icon>
+                    Change Password
+                  }
+                </button>
+
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+
+      </mat-tab-group>
+    }
+
+  </div>
+</app-dashboard-layout>

@@ -3,23 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Endpoints } from '../config/endpoints';
-import { User } from '../models/user.model';
-
-export interface UpdateProfileRequest {
-  username: string;
-  firstName: string;
-  middleName?: string;
-  surName: string;
-  profilePicture?: string;
-  phoneNumber: string;
-  email: string;
-}
-
-export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-}
+import { User, UpdateProfileRequest, ChangePasswordRequest } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -33,13 +17,13 @@ export class UserService {
 
   updateProfile(userId: string, data: UpdateProfileRequest): Observable<User> {
     return this.http.put<User>(
-      `${environment.authApiUrl}/api/users/${userId}/profile`, data
+      `${environment.authApiUrl}${Endpoints.user.updateProfile(userId)}`, data
     );
   }
 
   changePassword(data: ChangePasswordRequest): Observable<any> {
     return this.http.post<any>(
-      `${environment.authApiUrl}/api/users/change-password`, data
+      `${environment.authApiUrl}${Endpoints.user.changePassword}`, data
     );
   }
 
@@ -47,7 +31,7 @@ export class UserService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<any>(
-      `${environment.authApiUrl}/api/users/upload-image`, formData
+      `${environment.authApiUrl}${Endpoints.user.uploadImage}`, formData
     );
   }
 }

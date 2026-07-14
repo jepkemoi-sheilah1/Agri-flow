@@ -78,9 +78,17 @@
               </div>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-flat-button class="add-cart-btn">
-                <mat-icon>add_shopping_cart</mat-icon>
-                Add to Cart
+              <button mat-flat-button class="add-cart-btn"
+                      (click)="addToCart(product.id)"
+                      [disabled]="isAddingToCart[product.id]">
+                @if (isAddingToCart[product.id]) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                } @else {
+                  <ng-container>
+                    <mat-icon>add_shopping_cart</mat-icon>
+                    Add to Cart
+                  </ng-container>
+                }
               </button>
             </mat-card-actions>
           </mat-card>

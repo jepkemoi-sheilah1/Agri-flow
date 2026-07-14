@@ -3,6 +3,12 @@ export interface Category {
   name: string;
 }
 
+export interface ProductRatingSummary {
+  productId: string;
+  averageRating: number | null;
+  totalRatings: number | null;
+}
+
 export interface ProductResponse {
   id: string;
   productName: string;
@@ -11,9 +17,12 @@ export interface ProductResponse {
   quantity: number;
   unit: string;
   categoryId: string;
+  categoryName: string;
   businessId: string;
-  status: string;
+  businessName: string;
+  stockStatus: string;
   images: string[];
+  productRatingSummary: ProductRatingSummary;
   createdAt: string;
   updatedAt: string;
 }
@@ -34,10 +43,4 @@ export interface UpdateProductRequest {
   quantity?: number;
   unit?: string;
   categoryId?: string;
-}
-
-export interface ProductRatingSummary {
-  productId: string;
-  averageRating: number;
-  totalRatings: number;
 }

@@ -1,1 +1,90 @@
-<p>my-products works!</p>
+<app-dashboard-layout>
+  <div class="my-products-page">
+
+    <div class="page-header">
+      <div>
+        <h1>My Products</h1>
+        <p>Manage your product listings</p>
+      </div>
+      <button mat-flat-button class="create-btn" (click)="goToCreate()">
+        <mat-icon>add</mat-icon>
+        Add Product
+      </button>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Loading your products...</p>
+      </div>
+    }
+
+    @if (!isLoading && products.length === 0 && !errorMessage) {
+      <div class="state-box">
+        <mat-icon class="state-icon">inventory_2</mat-icon>
+        <p>You have no products yet.</p>
+        <button mat-flat-button class="create-btn" (click)="goToCreate()">
+          <mat-icon>add</mat-icon>
+          Create your first product
+        </button>
+      </div>
+    }
+
+    @if (!isLoading && products.length > 0) {
+      <div class="products-grid">
+        @for (product of products; track product.id) {
+          <mat-card class="product-card">
+            <div class="product-image">
+              @if (product.images && product.images.length > 0) {
+                <img [src]="product.images[0]"
+                     [alt]="product.productName"
+                     (error)="onImageError($event)" />
+              } @else {
+                <div class="no-image">
+                  <mat-icon>image_not_supported</mat-icon>
+                </div>
+              }
+              <span [class]="'stock-chip ' + getStockClass(product.stockStatus)">
+                {{ product.stockStatus === 'IN_STOCK' ? 'In Stock' : 'Out of Stock' }}
+              </span>
+            </div>
+
+            <mat-card-content>
+              <h3 class="product-name">{{ product.productName }}</h3>
+              <p class="product-desc">{{ product.description }}</p>
+              <div class="product-meta">
+                <span class="price">KES {{ product.price }}</span>
+                <span class="unit">per {{ product.unit }}</span>
+              </div>
+              <div class="product-meta">
+                <span class="qty">{{ product.quantity }} available</span>
+                <span class="category">{{ product.categoryName }}</span>
+              </div>
+            </mat-card-content>
+
+            <mat-card-actions class="card-actions">
+              @if (product.stockStatus === 'IN_STOCK') {
+                <button mat-stroked-button (click)="markOutOfStock(product.id)">
+                  <mat-icon>remove_shopping_cart</mat-icon>
+                  Out of Stock
+                </button>
+              }
+              <button mat-icon-button color="warn" (click)="deleteProduct(product.id)"
+                title="Delete product">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    }
+
+  </div>
+</app-dashboard-layout>

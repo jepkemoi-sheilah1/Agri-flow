@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,8 @@ import { OrderResponse } from '../../../core/models/order.model';
   selector: 'app-order-detail',
   standalone: true,
   imports: [
-    CommonModule,
+    DatePipe,
+    DecimalPipe,
     DashboardLayout,
     MatIconModule,
     MatButtonModule,
@@ -25,6 +26,7 @@ export class OrderDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private orderService = inject(OrderService);
+  private cdr = inject(ChangeDetectorRef);
 
   order: OrderResponse | null = null;
   isLoading = false;
@@ -42,15 +44,16 @@ export class OrderDetail implements OnInit {
   loadOrder(id: string): void {
     this.isLoading = true;
     this.errorMessage = '';
-
     this.orderService.getOrder(id).subscribe({
       next: (data) => {
         this.order = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Failed to load order details. Please try again.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
