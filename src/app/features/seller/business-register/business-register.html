@@ -1,74 +1,103 @@
-<div class="page">
-  <app-navbar />
+<app-dashboard-layout>
+  <div class="register-page">
 
-  <div class="content">
+    @if (!isSuccess) {
+      <div class="page-header">
+        <h1>Register Your Business</h1>
+        <p>Fill in your business details to start selling on AgriFlow</p>
+      </div>
 
-    <!-- Header -->
-    <div class="page-header">
-      <a routerLink="/buyer" class="back-link">
-        <mat-icon>arrow_back</mat-icon>
-        Back to dashboard
-      </a>
-      <h1>Register Your Business</h1>
-      <p>Set up your farm business to start selling on AgriFlow</p>
-    </div>
+      @if (errorMessage) {
+        <div class="error-box">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
 
-    <!-- Form card -->
-    <mat-card class="form-card">
-      <mat-card-content>
+      <mat-card class="form-card">
+        <mat-card-content>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        @if (errorMessage) {
-          <div class="error-box">
-            <mat-icon>error_outline</mat-icon>
-            <span>{{ errorMessage }}</span>
-          </div>
-        }
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Business Name</mat-label>
+              <input matInput formControlName="businessName"
+                placeholder="e.g. Kamau Fresh Produce" />
+              <mat-icon matSuffix>business</mat-icon>
+              @if (businessName?.invalid && businessName?.touched) {
+                <mat-error>Business name is required</mat-error>
+              }
+            </mat-form-field>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Business Email</mat-label>
+              <input matInput formControlName="businessEmail"
+                type="email"
+                placeholder="e.g. info@kamaufarm.co.ke" />
+              <mat-icon matSuffix>email</mat-icon>
+              @if (businessEmail?.invalid && businessEmail?.touched) {
+                <mat-error>Valid email is required</mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Business name</mat-label>
-            <input matInput formControlName="businessName" placeholder="Ezekiel Fresh Produce" />
-            <mat-icon matSuffix>business</mat-icon>
-            @if (businessName?.invalid && businessName?.touched) {
-              <mat-error>Business name is required</mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Business Phone</mat-label>
+              <input matInput formControlName="businessPhone"
+                placeholder="e.g. 0712345678" />
+              <mat-icon matSuffix>phone</mat-icon>
+              @if (businessPhone?.invalid && businessPhone?.touched) {
+                <mat-error>Business phone is required</mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Business email</mat-label>
-            <input matInput type="email" formControlName="businessEmail" placeholder="business@example.com" />
-            <mat-icon matSuffix>mail_outline</mat-icon>
-            @if (businessEmail?.invalid && businessEmail?.touched) {
-              <mat-error>Enter a valid business email</mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>County</mat-label>
+              <input matInput formControlName="county"
+                placeholder="e.g. Kiambu" />
+              <mat-icon matSuffix>location_on</mat-icon>
+              @if (county?.invalid && county?.touched) {
+                <mat-error>County is required</mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Business phone</mat-label>
-            <input matInput formControlName="businessPhone" placeholder="0713345678" />
-            <mat-icon matSuffix>phone</mat-icon>
-            @if (businessPhone?.invalid && businessPhone?.touched) {
-              <mat-error>Business phone is required</mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Business Description (optional)</mat-label>
+              <textarea matInput formControlName="businessProfile"
+                rows="3"
+                placeholder="Tell buyers about your farm and products...">
+              </textarea>
+            </mat-form-field>
 
-          <button
-            mat-flat-button
-            type="submit"
-            class="submit-btn"
-            [disabled]="isLoading || form.invalid">
-            @if (isLoading) {
-              <mat-spinner diameter="20"></mat-spinner>
-            } @else {
-              Register Business
-            }
-          </button>
+            <button mat-flat-button type="submit" class="submit-btn"
+              [disabled]="isLoading || form.invalid">
+              @if (isLoading) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                <mat-icon>storefront</mat-icon>
+                Register Business
+              }
+            </button>
 
-        </form>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    }
 
-      </mat-card-content>
-    </mat-card>
+    @if (isSuccess) {
+      <div class="success-state">
+        <mat-card class="success-card">
+          <mat-card-content>
+            <mat-icon class="success-icon">check_circle</mat-icon>
+            <h2>Business Registered!</h2>
+            <p>Your business has been submitted for review. Our team will verify your details and approve your account shortly.</p>
+            <p class="hint">You will be notified once your business is approved and you can start listing products.</p>
+            <button mat-flat-button class="submit-btn" (click)="goToDashboard()">
+              <mat-icon>home</mat-icon>
+              Back to Dashboard
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
 
   </div>
-</div>
+</app-dashboard-layout>

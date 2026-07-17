@@ -1,33 +1,46 @@
+
 <app-dashboard-layout>
 
   <!-- Welcome section -->
   <div class="welcome-section">
-    <h1>Welcome back, {{ user$?.firstName || 'Farmer' }} 👋</h1>
+    <h1>Welcome back, {{ user?.username || 'Farmer' }} 👋</h1>
     <p>Here is what is happening on AgriFlow today</p>
   </div>
 
   <!-- Stats cards -->
   <div class="stats-grid">
-    <mat-card class="stat-card">
+    <mat-card class="stat-card" routerLink="/buyer/feed">
       <mat-card-content>
         <div class="stat-icon green">
           <mat-icon>storefront</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">0</span>
+          <span class="stat-number">{{ totalProducts }}</span>
           <span class="stat-label">Products Available</span>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card">
+    <mat-card class="stat-card" routerLink="/buyer/orders">
       <mat-card-content>
         <div class="stat-icon orange">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ totalOrders }}</span>
+          <span class="stat-label">My Orders</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/buyer/cart">
+      <mat-card-content>
+        <div class="stat-icon purple">
           <mat-icon>shopping_cart</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">0</span>
-          <span class="stat-label">My Orders</span>
+          <span class="stat-number">{{ cartItemCount }}</span>
+          <span class="stat-label">Cart Items</span>
         </div>
       </mat-card-content>
     </mat-card>
@@ -38,7 +51,7 @@
           <mat-icon>people</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">0</span>
+          <span class="stat-number">{{ totalSellers }}</span>
           <span class="stat-label">Active Sellers</span>
         </div>
       </mat-card-content>
@@ -56,22 +69,59 @@
           <h3>Start Selling Your Produce</h3>
           <p>Register your farm business and start listing your products for thousands of buyers</p>
         </div>
-        <button mat-flat-button routerLink="/seller/register-business" class="sell-btn">
+        <button mat-flat-button routerLink="/seller/business-register" class="sell-btn">
           Start Selling
         </button>
       </div>
     </mat-card-content>
   </mat-card>
 
-  <!-- Product feed placeholder -->
+  <!-- Recent products -->
   <div class="section-header">
     <h2>Fresh Produce Near You</h2>
     <a routerLink="/buyer/feed" class="see-all">See all</a>
   </div>
 
-  <div class="empty-feed">
-    <mat-icon>grass</mat-icon>
-    <p>Products will appear here once sellers list them</p>
-  </div>
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+  }
+
+  @if (!isLoading && recentProducts.length === 0) {
+    <div class="empty-feed">
+      <mat-icon>grass</mat-icon>
+      <p>Products will appear here once sellers list them</p>
+    </div>
+  }
+
+  @if (!isLoading && recentProducts.length > 0) {
+    <div class="products-grid">
+      @for (product of recentProducts; track product.id) {
+        <mat-card class="product-card" routerLink="/buyer/feed">
+          <div class="product-image">
+            @if (product.images && product.images.length > 0) {
+              <img [src]="product.images[0]"
+                   [alt]="product.productName"
+                   (error)="onImageError($event)" />
+            } @else {
+              <div class="no-image">
+                <mat-icon>grass</mat-icon>
+              </div>
+            }
+          </div>
+          <mat-card-content>
+            <h3 class="product-name">{{ product.productName }}</h3>
+            <p class="product-business">{{ product.businessName }}</p>
+            <div class="product-footer">
+              <span class="price">KES {{ product.price }}</span>
+              <span class="unit">/ {{ product.unit }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
 
 </app-dashboard-layout>
+
