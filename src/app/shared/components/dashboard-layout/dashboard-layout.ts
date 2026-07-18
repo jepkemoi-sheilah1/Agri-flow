@@ -35,11 +35,11 @@ export class DashboardLayout {
 
     if (role === Role.SELLER) {
       return [
-        { label: 'Home',            icon: 'home',          route: '/seller' },
-        { label: 'My Products',     icon: 'inventory_2',   route: '/seller/products' },
-        { label: 'Create Product',  icon: 'add_box',       route: '/seller/create-product' },
-        { label: 'Orders',          icon: 'receipt_long',  route: '/seller/orders' },
-        { label: 'Profile',         icon: 'person',        route: '/seller/profile' },
+        { label: 'Home',           icon: 'home',          route: '/seller' },
+        { label: 'My Products',    icon: 'inventory_2',   route: '/seller/products' },
+        { label: 'Create Product', icon: 'add_box',       route: '/seller/create-product' },
+        { label: 'Orders',         icon: 'receipt_long',  route: '/seller/orders' },
+        { label: 'Profile',        icon: 'person',        route: '/seller/profile' },
       ];
     }
 
@@ -52,25 +52,21 @@ export class DashboardLayout {
       ];
     }
 
-    if (role === Role.SUPER_ADMIN) {
-      return [
-        { label: 'Dashboard',        icon: 'dashboard',            route: '/super-admin' },
-        { label: 'Businesses',       icon: 'business',             route: '/super-admin/businesses' },
-        { label: 'Users',            icon: 'people',               route: '/super-admin/users' },
-        { label: 'Disputes',         icon: 'gavel',                route: '/super-admin/disputes' },
-        { label: 'Admin Management', icon: 'admin_panel_settings', route: '/super-admin/admins' },
-        { label: 'Settings',         icon: 'settings',             route: '/super-admin/settings' },
-      ];
-    }
+   if (role === Role.SUPER_ADMIN) {
+  return [
+    { label: 'Dashboard',          icon: 'dashboard',       route: '/super-admin' },
+    { label: 'Business Approvals', icon: 'pending_actions', route: '/super-admin/businesses' },
+  ];
+}
 
     // FARMER (default buyer menu)
     return [
-      { label: 'Home',          icon: 'home',          route: '/buyer' },
-      { label: 'Browse',        icon: 'storefront',    route: '/buyer/feed' },
-      { label: 'Cart',          icon: 'shopping_cart', route: '/buyer/cart' },
-      { label: 'My Orders',     icon: 'shopping_bag',  route: '/buyer/orders' },
-      { label: 'Start Selling', icon: 'agriculture',   route: '/seller/business-register' },
-      { label: 'Profile',       icon: 'person',        route: '/buyer/profile' },
+      { label: 'Home',            icon: 'home',          route: '/buyer' },
+      { label: 'Browse Products', icon: 'storefront',    route: '/buyer/feed' },
+      { label: 'Cart',            icon: 'shopping_cart', route: '/buyer/cart' },
+      { label: 'My Orders',       icon: 'shopping_bag',  route: '/buyer/orders' },
+      { label: 'Profile',         icon: 'person',        route: '/buyer/profile' },
+      { label: 'Start Selling',   icon: 'agriculture',   route: '/seller/business-register' },
     ];
   }
 

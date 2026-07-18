@@ -1,6 +1,106 @@
 <app-dashboard-layout>
+
   <div class="welcome-section">
-    <h1>Super Admin Dashboard</h1>
-    <p>Full platform control and management</p>
+    <div>
+      <h1>Welcome, {{ user?.username }} 👋</h1>
+      <p>Full platform control and management</p>
+    </div>
   </div>
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+  }
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <mat-card class="stat-card" routerLink="/super-admin/businesses">
+      <mat-card-content>
+        <div class="stat-icon orange">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ pendingBusinesses.length }}</span>
+          <span class="stat-label">Pending Approvals</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon green">
+          <mat-icon>verified</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ verifiedBusinesses.length }}</span>
+          <span class="stat-label">Active Sellers</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Pending businesses -->
+  <div class="section-header">
+    <h2>Pending Business Approvals</h2>
+    <a routerLink="/super-admin/businesses" class="see-all">View all</a>
+  </div>
+
+  @if (pendingBusinesses.length === 0) {
+    <div class="empty-state">
+      <mat-icon>check_circle</mat-icon>
+      <p>No pending approvals</p>
+    </div>
+  } @else {
+    <div class="business-list">
+      @for (biz of pendingBusinesses.slice(0, 5); track biz.id) {
+        <mat-card class="business-card" routerLink="/super-admin/businesses">
+          <mat-card-content>
+            <div class="business-row">
+              <div class="business-icon">
+                <mat-icon>storefront</mat-icon>
+              </div>
+              <div class="business-info">
+                <span class="business-name">{{ biz.businessName }}</span>
+                <span class="business-meta">{{ biz.businessEmail }} · {{ biz.county }}</span>
+              </div>
+              <span class="badge-pending">PENDING</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
+  <!-- Verified businesses -->
+  <div class="section-header" style="margin-top: 24px;">
+    <h2>Active Sellers</h2>
+  </div>
+
+  @if (verifiedBusinesses.length === 0) {
+    <div class="empty-state">
+      <mat-icon>storefront</mat-icon>
+      <p>No verified sellers yet</p>
+    </div>
+  } @else {
+    <div class="business-list">
+      @for (biz of verifiedBusinesses.slice(0, 5); track biz.id) {
+        <mat-card class="business-card">
+          <mat-card-content>
+            <div class="business-row">
+              <div class="business-icon green">
+                <mat-icon>storefront</mat-icon>
+              </div>
+              <div class="business-info">
+                <span class="business-name">{{ biz.businessName }}</span>
+                <span class="business-meta">{{ biz.businessEmail }} · {{ biz.county }}</span>
+              </div>
+              <span class="badge-approved">VERIFIED</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
 </app-dashboard-layout>

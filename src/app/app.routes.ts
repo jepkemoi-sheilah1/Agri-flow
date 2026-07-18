@@ -94,25 +94,24 @@ export const routes: Routes = [
       .then(m => m.Profile)
   },
 
-  // seller
+  // seller — FARMER role (backend has no SELLER role)
   {
     path: 'seller',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
   {
     path: 'seller/create-product',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
   },
   {
     path: 'seller/business-register',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.SELLER, Role.ADMIN, Role.SUPER_ADMIN] },
+    canActivate: [authGuard],
     loadComponent: () => import('./features/seller/business-register/business-register')
       .then(m => m.BusinessRegister)
   },
@@ -153,6 +152,13 @@ export const routes: Routes = [
     loadComponent: () => import('./features/super-admin/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
+  {
+    path: 'super-admin/businesses',
+    canActivate: [authGuard, roleGuard],
+    data: { roles: [Role.SUPER_ADMIN] },
+    loadComponent: () => import('./features/admin/business-approvals/business-approvals')
+      .then(m => m.BusinessApprovals)
+},
 
   // fallback
   {

@@ -1,6 +1,146 @@
 <app-dashboard-layout>
+
   <div class="welcome-section">
-    <h1>Welcome, {{ user$?.firstName }} 👋</h1>
-    <p>Manage your products and orders</p>
+    <div>
+      <h1>Welcome, {{ user?.username }} 👋</h1>
+      <p>Here's how your business is performing</p>
+    </div>
+    <button mat-flat-button class="add-btn" routerLink="/seller/create-product">
+      <mat-icon>add</mat-icon>
+      Add Product
+    </button>
   </div>
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+  }
+
+  <!-- Business status card -->
+  @if (business) {
+    <mat-card class="business-card">
+      <mat-card-content>
+        <div class="business-info">
+          <div class="business-icon">
+            <mat-icon>storefront</mat-icon>
+          </div>
+          <div class="business-details">
+            <h3>{{ business.businessName }}</h3>
+            <p>{{ business.businessEmail }} · {{ business.county }}</p>
+          </div>
+          <span [class]="'approval-badge ' + getApprovalClass(business.approvalStatus)">
+            {{ business.approvalStatus }}
+          </span>
+        </div>
+        @if (business.approvalStatus === 'PENDING') {
+          <div class="pending-notice">
+            <mat-icon>info</mat-icon>
+            <span>Your business is pending approval. You can still add products while you wait.</span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <mat-card class="stat-card" routerLink="/seller/orders">
+      <mat-card-content>
+        <div class="stat-icon orange">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ totalOrders }}</span>
+          <span class="stat-label">Total Orders</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" routerLink="/seller/my-products">
+      <mat-card-content>
+        <div class="stat-icon green">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ totalProducts }}</span>
+          <span class="stat-label">My Products</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent orders -->
+  <div class="section-header">
+    <h2>Recent Orders</h2>
+    <a routerLink="/seller/orders" class="see-all">See all</a>
+  </div>
+
+  @if (recentOrders.length === 0) {
+    <div class="empty-state">
+      <mat-icon>receipt_long</mat-icon>
+      <p>No orders yet</p>
+    </div>
+  } @else {
+    <mat-card class="orders-card">
+      <mat-card-content>
+        @for (order of recentOrders; track order.id) {
+          <div class="order-row" routerLink="/seller/orders">
+            <div class="order-info">
+              <span class="order-id">#{{ order.id.slice(0, 8) }}</span>
+              <span class="order-date">{{ order.createdAt | date: 'dd MMM yyyy' }}</span>
+            </div>
+            <span class="order-items">{{ order.items.length }} item(s)</span>
+            <span [class]="'status-badge ' + getStatusClass(order.status)">
+              {{ order.status }}
+            </span>
+          </div>
+          <mat-divider></mat-divider>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- My products preview -->
+  <div class="section-header" style="margin-top: 24px;">
+    <h2>My Products</h2>
+    <a routerLink="/seller/my-products" class="see-all">See all</a>
+  </div>
+
+  @if (myProducts.length === 0) {
+    <div class="empty-state">
+      <mat-icon>inventory_2</mat-icon>
+      <p>No products listed yet</p>
+      <button mat-flat-button class="add-btn" routerLink="/seller/create-product">
+        <mat-icon>add</mat-icon>
+        Add your first product
+      </button>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (product of myProducts; track product.id) {
+        <mat-card class="product-card" routerLink="/seller/my-products">
+          <div class="product-image">
+            @if (product.images && product.images.length > 0) {
+              <img [src]="product.images[0]"
+                   [alt]="product.productName"
+                   (error)="onImageError($event)" />
+            } @else {
+              <div class="no-image">
+                <mat-icon>image_not_supported</mat-icon>
+              </div>
+            }
+            <span [class]="product.stockStatus === 'IN_STOCK' ? 'chip-in-stock' : 'chip-out-of-stock'">
+              {{ product.stockStatus === 'IN_STOCK' ? 'In Stock' : 'Out of Stock' }}
+            </span>
+          </div>
+          <mat-card-content>
+            <h3 class="product-name">{{ product.productName }}</h3>
+            <p class="price">KES {{ product.price }} / {{ product.unit }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+
 </app-dashboard-layout>

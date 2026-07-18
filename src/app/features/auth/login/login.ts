@@ -53,6 +53,8 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         const role = response.role?.toUpperCase();
+        const token = this.authService.getDecodedToken();
+        const businessId = token?.businessId;
 
         switch (role) {
           case Role.SUPER_ADMIN:
@@ -61,10 +63,13 @@ export class LoginComponent implements OnInit {
           case Role.ADMIN:
             this.router.navigate(['/admin']);
             break;
-          case Role.SELLER:
-            this.router.navigate(['/seller']);
-            break;
           case Role.FARMER:
+            if (businessId) {
+              this.router.navigate(['/seller']);
+            } else {
+              this.router.navigate(['/buyer']);
+            }
+            break;
           default:
             this.router.navigate(['/buyer']);
         }

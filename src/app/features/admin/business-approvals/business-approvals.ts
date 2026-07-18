@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +24,7 @@ import { BusinessResponse } from '../../../core/models/kyc.model';
 })
 export class BusinessApprovals implements OnInit {
   private businessService = inject(BusinessService);
+  private cdr = inject(ChangeDetectorRef);
 
   businesses: BusinessResponse[] = [];
   isLoading = false;
@@ -42,10 +43,12 @@ export class BusinessApprovals implements OnInit {
       next: (data) => {
         this.businesses = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Failed to load pending businesses.';
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -58,6 +61,7 @@ export class BusinessApprovals implements OnInit {
       },
       error: () => {
         this.errorMessage = 'Failed to approve business.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -70,6 +74,7 @@ export class BusinessApprovals implements OnInit {
       },
       error: () => {
         this.errorMessage = 'Failed to reject business.';
+        this.cdr.detectChanges();
       }
     });
   }
