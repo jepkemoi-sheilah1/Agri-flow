@@ -5,14 +5,12 @@ import { Role } from './core/models/enums/role.enum';
 
 export const routes: Routes = [
 
-  // landing page — public
+  // public
   {
     path: '',
     loadComponent: () => import('./public/landing/landing.component')
       .then(m => m.LandingComponent)
   },
-
-  // public auth
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login')
@@ -94,7 +92,7 @@ export const routes: Routes = [
       .then(m => m.Profile)
   },
 
-  // seller — FARMER role (backend has no SELLER role)
+  // seller
   {
     path: 'seller',
     canActivate: [authGuard, roleGuard],
@@ -103,17 +101,17 @@ export const routes: Routes = [
       .then(m => m.Dashboard)
   },
   {
+    path: 'seller/business-register',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/business-register/business-register')
+      .then(m => m.BusinessRegister)
+  },
+  {
     path: 'seller/create-product',
     canActivate: [authGuard, roleGuard],
     data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
-  },
-  {
-    path: 'seller/business-register',
-    canActivate: [authGuard],
-    loadComponent: () => import('./features/seller/business-register/business-register')
-      .then(m => m.BusinessRegister)
   },
   {
     path: 'seller/my-products',
@@ -126,6 +124,18 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/seller/business-orders/business-orders')
       .then(m => m.BusinessOrders)
+  },
+  {
+    path: 'seller/orders/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/order-detail/order-detail')
+      .then(m => m.OrderDetail)
+  },
+  {
+    path: 'seller/wallet',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seller/wallet/wallet')
+      .then(m => m.Wallet)
   },
 
   // admin
@@ -158,7 +168,7 @@ export const routes: Routes = [
     data: { roles: [Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/admin/business-approvals/business-approvals')
       .then(m => m.BusinessApprovals)
-},
+  },
 
   // fallback
   {

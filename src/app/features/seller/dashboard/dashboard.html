@@ -84,15 +84,15 @@
   } @else {
     <mat-card class="orders-card">
       <mat-card-content>
-        @for (order of recentOrders; track order.id) {
+        @for (order of recentOrders; track order.fulfillmentId) {
           <div class="order-row" routerLink="/seller/orders">
             <div class="order-info">
-              <span class="order-id">#{{ order.id.slice(0, 8) }}</span>
+              <span class="order-id">#{{ order.orderId.slice(0, 8) }}</span>
               <span class="order-date">{{ order.createdAt | date: 'dd MMM yyyy' }}</span>
             </div>
             <span class="order-items">{{ order.items.length }} item(s)</span>
-            <span [class]="'status-badge ' + getStatusClass(order.status)">
-              {{ order.status }}
+            <span [class]="'status-badge ' + getStatusClass(order.fulfillmentStatus)">
+              {{ order.fulfillmentStatus }}
             </span>
           </div>
           <mat-divider></mat-divider>

@@ -40,18 +40,18 @@ export interface OrderResponse {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface SellerOrderResponse {
-  id: string;
   orderId: string;
-  businessId: string;
-  businessName: string;
-  status: string;
-  items: OrderItemResponse[];
+  orderNumber: string;
+  fulfillmentId: string;
+  fulfillmentStatus: string;
+  deliveryAddress: string;
+  deliveryNotes?: string;
+  sellerTotal: number;
   createdAt: string;
   updatedAt: string;
+  items: OrderItemResponse[];
 }
-
 export interface UpdateFulfillmentRequest {
   status: string;
   notes?: string;

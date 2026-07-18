@@ -5,13 +5,9 @@ import { environment } from '../../../environments/environment';
 import {
   WalletResponse,
   WalletTransactionResponse,
-  PayoutResponse
+  PayoutResponse,
+  WithdrawRequest
 } from '../models/payment.model';
-
-export interface WithdrawalRequest {
-  amount: number;
-  phoneNumber: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -23,7 +19,7 @@ export class WalletService {
     );
   }
 
-  withdraw(data: WithdrawalRequest): Observable<any> {
+  withdraw(data: WithdrawRequest): Observable<any> {
     return this.http.post<any>(
       `${environment.paymentApiUrl}/api/wallet/withdraw`, data
     );

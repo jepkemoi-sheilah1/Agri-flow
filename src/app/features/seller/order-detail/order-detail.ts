@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,10 +13,11 @@ import { OrderService } from '../../../core/services/order.service';
 import { SellerOrderResponse } from '../../../core/models/order.model';
 
 @Component({
-  selector: 'app-business-orders',
+  selector: 'app-order-detail',
   standalone: true,
   imports: [
     DatePipe,
+    DecimalPipe,
     DashboardLayout,
     MatCardModule,
     MatButtonModule,
@@ -26,18 +27,19 @@ import { SellerOrderResponse } from '../../../core/models/order.model';
     MatSelectModule,
     MatFormFieldModule,
   ],
-  templateUrl: './business-orders.html',
-  styleUrl: './business-orders.css',
+  templateUrl: './order-detail.html',
+  styleUrl: './order-detail.css',
 })
-export class BusinessOrders implements OnInit {
-  private orderService = inject(OrderService);
+export class OrderDetail implements OnInit {
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private orderService = inject(OrderService);
   private cdr = inject(ChangeDetectorRef);
 
-  orders: SellerOrderResponse[] = [];
+  order: SellerOrderResponse | null = null;
   isLoading = false;
   errorMessage = '';
-  updatingOrderId: string | null = null;
+  isUpdating = false;
 
   readonly fulfillmentStatuses = [
     'PENDING',
@@ -49,42 +51,44 @@ export class BusinessOrders implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.loadOrders();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadOrder(id);
+    } else {
+      this.router.navigate(['/seller/orders']);
+    }
   }
 
-  loadOrders(): void {
+  loadOrder(id: string): void {
     this.isLoading = true;
-    this.errorMessage = '';
-    this.orderService.getSellerOrders().subscribe({
-      next: (orders) => {
-        this.orders = orders;
+    this.orderService.getSellerOrderDetail(id).subscribe({
+      next: (order) => {
+        this.order = order;
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: () => {
-        this.errorMessage = 'Failed to load orders.';
+        this.errorMessage = 'Failed to load order details.';
         this.isLoading = false;
         this.cdr.detectChanges();
       }
     });
   }
 
-  updateStatus(fulfillmentId: string, status: string): void {
-    this.updatingOrderId = fulfillmentId;
-    this.orderService.updateFulfillmentStatus(fulfillmentId, { status }).subscribe({
-      next: () => {
-        this.updatingOrderId = null;
-        this.loadOrders();
+  updateStatus(status: string): void {
+    if (!this.order) return;
+    this.isUpdating = true;
+    this.orderService.updateFulfillmentStatus(this.order.fulfillmentId, { status }).subscribe({
+      next: (updated) => {
+        this.order = updated;
+        this.isUpdating = false;
+        this.cdr.detectChanges();
       },
       error: () => {
-        this.updatingOrderId = null;
+        this.isUpdating = false;
         this.cdr.detectChanges();
       }
     });
-  }
-
-  goToDetail(orderId: string): void {
-    this.router.navigate(['/seller/orders', orderId]);
   }
 
   getStatusClass(status: string): string {
@@ -97,5 +101,9 @@ export class BusinessOrders implements OnInit {
       CANCELLED:  'badge-cancelled',
     };
     return map[status?.toUpperCase()] ?? 'badge-default';
+  }
+
+  goBack(): void {
+    this.router.navigate(['/seller/orders']);
   }
 }

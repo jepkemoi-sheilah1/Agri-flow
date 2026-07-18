@@ -35,18 +35,18 @@
 
     @if (!isLoading && orders.length > 0) {
       <div class="orders-list">
-        @for (order of orders; track order.id) {
+        @for (order of orders; track order.fulfillmentId) {
           <mat-card class="order-card">
             <mat-card-content>
 
               <!-- Order header -->
               <div class="order-header">
                 <div class="order-meta">
-                  <span class="order-id">#{{ order.id.slice(0, 8).toUpperCase() }}</span>
+                  <span class="order-id">#{{ order.orderNumber }}</span>
                   <span class="order-date">{{ order.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
                 </div>
-                <span [class]="'status-badge ' + getStatusClass(order.status)">
-                  {{ order.status }}
+                <span [class]="'status-badge ' + getStatusClass(order.fulfillmentStatus)">
+                  {{ order.fulfillmentStatus }}
                 </span>
               </div>
 
@@ -72,17 +72,21 @@
                 <div class="update-status">
                   <mat-form-field appearance="outline" class="status-select">
                     <mat-label>Update Status</mat-label>
-                    <mat-select [value]="order.status"
-                      (selectionChange)="updateStatus(order.id, $event.value)">
+                    <mat-select [value]="order.fulfillmentStatus"
+                      (selectionChange)="updateStatus(order.fulfillmentId, $event.value)">
                       @for (status of fulfillmentStatuses; track status) {
                         <mat-option [value]="status">{{ status }}</mat-option>
                       }
                     </mat-select>
                   </mat-form-field>
-                  @if (updatingOrderId === order.id) {
+                  @if (updatingOrderId === order.fulfillmentId) {
                     <mat-spinner diameter="20"></mat-spinner>
                   }
                 </div>
+                <button mat-stroked-button (click)="goToDetail(order.orderId)">
+                  <mat-icon>visibility</mat-icon>
+                  View Details
+                </button>
               </div>
 
             </mat-card-content>

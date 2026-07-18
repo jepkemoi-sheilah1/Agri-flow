@@ -1,0 +1,154 @@
+<app-dashboard-layout>
+  <div class="wallet-page">
+
+    <div class="page-header">
+      <h1>My Wallet</h1>
+      <p>Manage your earnings and withdrawals</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Loading wallet...</p>
+      </div>
+    }
+
+    @if (!isLoading) {
+
+      <!-- Balance card -->
+      <mat-card class="balance-card">
+        <mat-card-content>
+          <div class="balance-section">
+            <div class="balance-info">
+              <span class="balance-label">Available Balance</span>
+              <span class="balance-amount">
+                KES {{ wallet?.balance ?? 0 | number: '1.2-2' }}
+              </span>
+              <span class="wallet-status">
+                {{ wallet?.status ?? 'ACTIVE' }}
+              </span>
+            </div>
+            <div class="balance-icon">
+              <mat-icon>account_balance_wallet</mat-icon>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-tab-group class="wallet-tabs">
+
+        <!-- Withdraw tab -->
+        <mat-tab label="Withdraw">
+          <mat-card class="form-card">
+            <mat-card-content>
+              <h3>Withdraw to M-Pesa</h3>
+              <p class="hint">Funds will be sent to your M-Pesa number within minutes.</p>
+
+              <form [formGroup]="withdrawForm" (ngSubmit)="onWithdraw()">
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Amount (KES)</mat-label>
+                  <input matInput formControlName="amount" type="number"
+                    placeholder="e.g. 1000" />
+                  <mat-icon matSuffix>payments</mat-icon>
+                  @if (withdrawForm.get('amount')?.invalid &&
+                       withdrawForm.get('amount')?.touched) {
+                    <mat-error>Enter a valid amount</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>M-Pesa Phone Number</mat-label>
+                  <input matInput formControlName="phoneNumber"
+                    placeholder="2547XXXXXXXX" />
+                  <mat-icon matSuffix>phone</mat-icon>
+                  @if (withdrawForm.get('phoneNumber')?.invalid &&
+                       withdrawForm.get('phoneNumber')?.touched) {
+                    <mat-error>Enter a valid Safaricom number (2547XXXXXXXX)</mat-error>
+                  }
+                </mat-form-field>
+
+                <button mat-flat-button type="submit" class="withdraw-btn"
+                  [disabled]="isWithdrawing || withdrawForm.invalid">
+                  @if (isWithdrawing) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  } @else {
+                    <mat-icon>send</mat-icon>
+                    Withdraw
+                  }
+                </button>
+
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+
+        <!-- Transactions tab -->
+        <mat-tab label="Transactions">
+          @if (transactions.length === 0) {
+            <div class="state-box">
+              <mat-icon>receipt_long</mat-icon>
+              <p>No transactions yet</p>
+            </div>
+          } @else {
+            <mat-card class="list-card">
+              <mat-card-content>
+                @for (txn of transactions; track txn.id) {
+                  <div class="txn-row">
+                    <div class="txn-info">
+                      <span class="txn-desc">{{ txn.description }}</span>
+                      <span class="txn-date">{{ txn.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                    </div>
+                    <span [class]="'txn-amount ' + getTransactionClass(txn.type)">
+                      {{ txn.type === 'CREDIT' ? '+' : '-' }} KES {{ txn.amount | number: '1.2-2' }}
+                    </span>
+                  </div>
+                  <mat-divider></mat-divider>
+                }
+              </mat-card-content>
+            </mat-card>
+          }
+        </mat-tab>
+
+        <!-- Payouts tab -->
+        <mat-tab label="Payouts">
+          @if (payouts.length === 0) {
+            <div class="state-box">
+              <mat-icon>payments</mat-icon>
+              <p>No payouts yet</p>
+            </div>
+          } @else {
+            <mat-card class="list-card">
+              <mat-card-content>
+                @for (payout of payouts; track payout.id) {
+                  <div class="txn-row">
+                    <div class="txn-info">
+                      <span class="txn-desc">{{ payout.phoneNumber }}</span>
+                      <span class="txn-date">{{ payout.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                    </div>
+                    <div class="payout-right">
+                      <span class="txn-amount debit">
+                        - KES {{ payout.amount | number: '1.2-2' }}
+                      </span>
+                      <span class="payout-status">{{ payout.status }}</span>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                }
+              </mat-card-content>
+            </mat-card>
+          }
+        </mat-tab>
+
+      </mat-tab-group>
+    }
+
+  </div>
+</app-dashboard-layout>

@@ -22,6 +22,7 @@ export interface WalletResponse {
   id: string;
   userId: string;
   balance: number;
+  status: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -39,7 +40,13 @@ export interface PayoutResponse {
   id: string;
   walletId: string;
   amount: number;
+  phoneNumber: string;
   status: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface WithdrawRequest {
+  amount: number;
+  phoneNumber: string;
 }

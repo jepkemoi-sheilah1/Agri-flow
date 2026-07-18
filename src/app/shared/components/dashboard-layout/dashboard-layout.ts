@@ -32,34 +32,34 @@ export class DashboardLayout {
 
   get menuItems() {
     const role = this.user?.role as string;
+    const businessId = this.user?.businessId;
 
-    if (role === Role.SELLER) {
-      return [
-        { label: 'Home',           icon: 'home',          route: '/seller' },
-        { label: 'My Products',    icon: 'inventory_2',   route: '/seller/products' },
-        { label: 'Create Product', icon: 'add_box',       route: '/seller/create-product' },
-        { label: 'Orders',         icon: 'receipt_long',  route: '/seller/orders' },
-        { label: 'Profile',        icon: 'person',        route: '/seller/profile' },
-      ];
-    }
+   if (role === Role.FARMER && businessId) {
+  return [
+    { label: 'Home',        icon: 'home',         route: '/seller' },
+    { label: 'My Products', icon: 'inventory_2',  route: '/seller/my-products' },
+    { label: 'Add Product', icon: 'add_box',      route: '/seller/create-product' },
+    { label: 'Orders',      icon: 'receipt_long', route: '/seller/orders' },
+    { label: 'Wallet',      icon: 'account_balance_wallet', route: '/seller/wallet' },
+    { label: 'Profile',     icon: 'person',       route: '/buyer/profile' },
+  ];
+}
 
     if (role === Role.ADMIN) {
       return [
         { label: 'Dashboard',          icon: 'dashboard',       route: '/admin' },
         { label: 'Pending Businesses', icon: 'pending_actions', route: '/admin/businesses' },
-        { label: 'Disputes',           icon: 'gavel',           route: '/admin/disputes' },
-        { label: 'Users',              icon: 'people',          route: '/admin/users' },
       ];
     }
 
-   if (role === Role.SUPER_ADMIN) {
-  return [
-    { label: 'Dashboard',          icon: 'dashboard',       route: '/super-admin' },
-    { label: 'Business Approvals', icon: 'pending_actions', route: '/super-admin/businesses' },
-  ];
-}
+    if (role === Role.SUPER_ADMIN) {
+      return [
+        { label: 'Dashboard',          icon: 'dashboard',       route: '/super-admin' },
+        { label: 'Business Approvals', icon: 'pending_actions', route: '/super-admin/businesses' },
+      ];
+    }
 
-    // FARMER (default buyer menu)
+    // FARMER without businessId → buyer menu
     return [
       { label: 'Home',            icon: 'home',          route: '/buyer' },
       { label: 'Browse Products', icon: 'storefront',    route: '/buyer/feed' },
