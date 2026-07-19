@@ -60,14 +60,18 @@ export class DashboardLayout {
     }
 
     // FARMER without businessId → buyer menu
-    return [
-      { label: 'Home',            icon: 'home',          route: '/buyer' },
-      { label: 'Browse Products', icon: 'storefront',    route: '/buyer/feed' },
-      { label: 'Cart',            icon: 'shopping_cart', route: '/buyer/cart' },
-      { label: 'My Orders',       icon: 'shopping_bag',  route: '/buyer/orders' },
-      { label: 'Profile',         icon: 'person',        route: '/buyer/profile' },
-      { label: 'Start Selling',   icon: 'agriculture',   route: '/seller/business-register' },
-    ];
+    
+return [
+  { label: 'Home',            icon: 'home',          route: '/buyer' },
+  { label: 'Browse Products', icon: 'storefront',    route: '/buyer/feed' },
+  { label: 'Cart',            icon: 'shopping_cart', route: '/buyer/cart' },
+  { label: 'My Orders',       icon: 'shopping_bag',  route: '/buyer/orders' },
+  { label: 'My Payments',     icon: 'payment',       route: '/buyer/my-payments' },
+  { label: 'Notifications',   icon: 'notifications', route: '/buyer/notifications' },
+  { label: 'Profile',         icon: 'person',        route: '/buyer/profile' },
+  { label: 'Start Selling',   icon: 'agriculture',   route: '/seller/business-register' },
+];      
+    
   }
 
   get bottomNavItems() {

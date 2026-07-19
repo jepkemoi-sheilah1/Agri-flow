@@ -1,0 +1,60 @@
+<app-dashboard-layout>
+  <div class="notifications-page">
+
+    <div class="page-header">
+      <div>
+        <h1>Notifications</h1>
+        <p>{{ unreadCount }} unread notification(s)</p>
+      </div>
+      <button mat-stroked-button (click)="loadNotifications()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Loading notifications...</p>
+      </div>
+    }
+
+    @if (!isLoading && notifications.length === 0 && !errorMessage) {
+      <div class="state-box">
+        <mat-icon class="state-icon">notifications_none</mat-icon>
+        <p>No notifications yet</p>
+      </div>
+    }
+
+    @if (!isLoading && notifications.length > 0) {
+      <mat-card class="notifications-card">
+        <mat-card-content>
+          @for (notification of notifications; track notification.id) {
+            <div [class]="'notification-row ' + (notification.read ? '' : 'unread')">
+              <div class="notification-icon" [class.unread-icon]="!notification.read">
+                <mat-icon>{{ notification.read ? 'notifications' : 'notifications_active' }}</mat-icon>
+              </div>
+              <div class="notification-info">
+                <span class="notification-title">{{ notification.title }}</span>
+                <span class="notification-message">{{ notification.message }}</span>
+                <span class="notification-date">{{ notification.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+              </div>
+              @if (!notification.read) {
+                <span class="unread-dot"></span>
+              }
+            </div>
+            <mat-divider></mat-divider>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+
+  </div>
+</app-dashboard-layout>

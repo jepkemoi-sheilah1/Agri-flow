@@ -169,7 +169,20 @@ export const routes: Routes = [
     loadComponent: () => import('./features/admin/business-approvals/business-approvals')
       .then(m => m.BusinessApprovals)
   },
+{
+  path: 'buyer/my-payments',
+  canActivate: [authGuard],
+  loadComponent: () => import('./features/buyer/my-payments/my-payments')
+    .then(m => m.MyPayments)
+},
+  {
+  path: 'buyer/notifications',
+  canActivate: [authGuard],
+  loadComponent: () => import('./features/buyer/notifications/notifications')
+    .then(m => m.Notifications)
+},
 
+  
   // fallback
   {
     path: '**',

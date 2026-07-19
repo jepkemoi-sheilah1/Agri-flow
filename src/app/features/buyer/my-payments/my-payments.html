@@ -1,0 +1,62 @@
+<app-dashboard-layout>
+  <div class="payments-page">
+
+    <div class="page-header">
+      <h1>My Payments</h1>
+      <p>Your M-Pesa payment history</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    @if (isLoading) {
+      <div class="state-box">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Loading payments...</p>
+      </div>
+    }
+
+    @if (!isLoading && payments.length === 0 && !errorMessage) {
+      <div class="state-box">
+        <mat-icon class="state-icon">receipt_long</mat-icon>
+        <p>No payments yet.</p>
+        <button mat-flat-button class="browse-btn" routerLink="/buyer/feed">
+          Browse Products
+        </button>
+      </div>
+    }
+
+    @if (!isLoading && payments.length > 0) {
+      <mat-card class="payments-card">
+        <mat-card-content>
+          @for (payment of payments; track payment.id) {
+            <div class="payment-row">
+              <div class="payment-icon">
+                <mat-icon>phone_android</mat-icon>
+              </div>
+              <div class="payment-info">
+                <span class="payment-phone">{{ payment.phoneNumber }}</span>
+                <span class="payment-date">{{ payment.createdAt | date: 'dd MMM yyyy, HH:mm' }}</span>
+                @if (payment.mpesaReceiptNumber) {
+                  <span class="payment-receipt">Receipt: {{ payment.mpesaReceiptNumber }}</span>
+                }
+              </div>
+              <div class="payment-right">
+                <span class="payment-amount">KES {{ payment.amount | number: '1.2-2' }}</span>
+                <span [class]="'status-badge ' + getStatusClass(payment.status)">
+                  {{ payment.status }}
+                </span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+
+  </div>
+</app-dashboard-layout>
