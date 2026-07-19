@@ -53,46 +53,95 @@
       </div>
     } @else {
       <div class="product-grid">
-        @for (product of filteredProducts; track product.id) {
-          <mat-card class="product-card">
-            <div class="product-image">
-              @if (product.images && product.images.length > 0) {
-                <img [src]="product.images[0]"
-                     [alt]="product.productName"
-                     (error)="onImageError($event)" />
-              } @else {
-                <div class="no-image">
-                  <mat-icon>image_not_supported</mat-icon>
+          @for (product of filteredProducts; track product.id) {
+            <mat-card class="product-card">
+              <div class="product-image">
+                @if (product.images && product.images.length > 0) {
+                  <img [src]="product.images[0]"
+                       [alt]="product.productName"
+                       (error)="onImageError($event)" />
+                } @else {
+                  <div class="no-image">
+                    <mat-icon>image_not_supported</mat-icon>
+                  </div>
+                }
+              </div>
+              <mat-card-content>
+                <h3 class="product-name">{{ product.productName }}</h3>
+                <p class="product-desc">{{ product.description }}</p>
+                <!-- Rating summary -->
+                @if (product.productRatingSummary && product.productRatingSummary.totalRatings && product.productRatingSummary.totalRatings > 0) {
+                  <div class="rating-summary">
+                    <span class="stars">
+                      @for (i of [1,2,3,4,5]; track i) {
+                        <mat-icon aria-hidden="true">{{ i <= roundRating(product.productRatingSummary.totalRatings ? product.productRatingSummary.averageRating || 0 : 0) ? 'star' : 'star_border' }}</mat-icon>
+                      }
+                    </span>
+                    <span class="rating-count">{{ product.productRatingSummary.totalRatings }} reviews</span>
+                  </div>
+                } @else {
+                  <div class="rating-summary rating-empty">
+                    <span class="stars">
+                      @for (i of [1,2,3,4,5]; track i) {
+                        <mat-icon aria-hidden="true">star_border</mat-icon>
+                      }
+                    </span>
+                    <span class="rating-count">No reviews yet</span>
+                  </div>
+                }
+                <div class="product-footer">
+                  <div class="product-price">
+                    <span class="price">KES {{ product.price }}</span>
+                    <span class="unit">per {{ product.unit }}</span>
+                  </div>
+                  <span class="quantity">{{ product.quantity }} available</span>
+                </div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-flat-button class="add-cart-btn"
+                        (click)="addToCart(product.id)"
+                        [disabled]="isAddingToCart[product.id]">
+                  @if (isAddingToCart[product.id]) {
+                    <mat-spinner diameter="18"></mat-spinner>
+                  } @else {
+                    <ng-container>
+                      <mat-icon>add_shopping_cart</mat-icon>
+                      Add to Cart
+                    </ng-container>
+                  }
+                </button>
+                <button mat-button class="rate-btn" (click)="toggleRatingForm(product.id)">
+                  <mat-icon>star</mat-icon>
+                  Rate
+                </button>
+              </mat-card-actions>
+              <!-- Rating form -->
+              @if (ratingOpen[product.id]) {
+                <div class="rating-form">
+                  <div class="star-select">
+                    @for (s of [1,2,3,4,5]; track s) {
+                      <button mat-icon-button (click)="ratingValue[product.id] = s" [class.active]="ratingValue[product.id] >= s" aria-label="Rate {{s}} stars">
+                        <mat-icon>{{ ratingValue[product.id] >= s ? 'star' : 'star_border' }}</mat-icon>
+                      </button>
+                    }
+                  </div>
+                  <mat-form-field appearance="outline" class="rating-comment">
+                    <textarea matInput rows="2" placeholder="Leave a comment (optional)" [(ngModel)]="ratingComment[product.id]"></textarea>
+                  </mat-form-field>
+                  <div class="rating-actions">
+                    <button mat-stroked-button (click)="toggleRatingForm(product.id)">Cancel</button>
+                    <button mat-flat-button color="primary" (click)="submitRating(product.id)" [disabled]="isSubmittingRating[product.id]">
+                      @if (isSubmittingRating[product.id]) {
+                        <mat-spinner diameter="16"></mat-spinner>
+                      } @else {
+                        Submit
+                      }
+                    </button>
+                  </div>
                 </div>
               }
-            </div>
-            <mat-card-content>
-              <h3 class="product-name">{{ product.productName }}</h3>
-              <p class="product-desc">{{ product.description }}</p>
-              <div class="product-footer">
-                <div class="product-price">
-                  <span class="price">KES {{ product.price }}</span>
-                  <span class="unit">per {{ product.unit }}</span>
-                </div>
-                <span class="quantity">{{ product.quantity }} available</span>
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-flat-button class="add-cart-btn"
-                      (click)="addToCart(product.id)"
-                      [disabled]="isAddingToCart[product.id]">
-                @if (isAddingToCart[product.id]) {
-                  <mat-spinner diameter="18"></mat-spinner>
-                } @else {
-                  <ng-container>
-                    <mat-icon>add_shopping_cart</mat-icon>
-                    Add to Cart
-                  </ng-container>
-                }
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        }
+            </mat-card>
+          }
       </div>
     }
   }

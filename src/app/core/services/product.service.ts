@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   ProductResponse,
   Category,
@@ -59,9 +59,9 @@ export class ProductService {
   }
 
   getProductFeed(): Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>(
+    return this.http.get<ProductResponse[] | { value: ProductResponse[] }>(
       `${environment.productApiUrl}${Endpoints.product.feed}`
-    );
+    ).pipe(map(response => Array.isArray(response) ? response : response.value || []));
   }
 
   getMyProducts(): Observable<ProductResponse[]> {
@@ -83,9 +83,9 @@ export class ProductService {
   }
 
   searchProducts(keyword: string): Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>(
+    return this.http.get<ProductResponse[] | { value: ProductResponse[] }>(
       `${environment.productApiUrl}${Endpoints.product.search}`,
       { params: { keyword } }
-    );
+    ).pipe(map(response => Array.isArray(response) ? response : response.value || []));
   }
 }

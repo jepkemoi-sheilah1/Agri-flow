@@ -83,6 +83,20 @@
   flex-shrink: 0;
 }
 
+
+.device-card {
+  margin: 1rem 0 1.5rem;
+}
+
+.device-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.token-field { flex: 1; }
+.type-field { width: 160px; }
+.device-actions { display:flex; gap:8px; align-items:center; }
 .notification-icon.unread-icon {
   background: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);

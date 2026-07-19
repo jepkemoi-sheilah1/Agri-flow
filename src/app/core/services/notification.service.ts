@@ -22,4 +22,18 @@ export class NotificationService {
       `${environment.authApiUrl}${Endpoints.notification.myNotifications}`
     );
   }
+
+  registerDeviceToken(fcmToken: string, deviceType: string): Observable<any> {
+    return this.http.post(
+      `${environment.authApiUrl}${Endpoints.notification.registerDevice}`,
+      { fcmToken, deviceType }
+    );
+  }
+
+  removeDeviceToken(fcmToken: string): Observable<any> {
+    return this.http.delete(
+      `${environment.authApiUrl}${Endpoints.notification.removeDevice}`,
+      { params: { fcmToken } }
+    );
+  }
 }

@@ -27,6 +27,16 @@ export const routes: Routes = [
       .then(m => m.VerifyOtpComponent)
   },
   {
+    path: 'forgot-password',
+    loadComponent: () => import('./features/auth/password-reset/request-reset')
+      .then(m => m.RequestReset)
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./features/auth/password-reset/reset-password')
+      .then(m => m.ResetPassword)
+  },
+  {
     path: 'unauthorized',
     loadComponent: () => import('./features/auth/unauthorized/unauthorized')
       .then(m => m.Unauthorized)

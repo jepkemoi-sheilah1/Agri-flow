@@ -16,9 +16,9 @@
 
     <!-- Desktop Nav Links -->
     <nav class="desktop-nav">
-      <a routerLink="/browse" routerLinkActive="nav-active" class="nav-link">Browse</a>
-      <a routerLink="/sellers" routerLinkActive="nav-active" class="nav-link">Sellers</a>
-      <a routerLink="/about" routerLinkActive="nav-active" class="nav-link">About</a>
+      <a href="#" class="nav-link" (click)="navigateTo('browse', $event)">Browse</a>
+      <a href="#" class="nav-link" (click)="navigateTo('sellers', $event)">Sellers</a>
+      <a href="#" class="nav-link" (click)="navigateTo('about', $event)">About</a>
     </nav>
 
     <!-- Desktop CTAs -->
@@ -38,9 +38,9 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" [class.open]="menuOpen()">
-    <a routerLink="/browse" class="mobile-link" (click)="closeMenu()">Browse Products</a>
-    <a routerLink="/sellers" class="mobile-link" (click)="closeMenu()">Our Sellers</a>
-    <a routerLink="/about" class="mobile-link" (click)="closeMenu()">About</a>
+    <a href="#" class="mobile-link" (click)="navigateTo('browse', $event)">Browse Products</a>
+    <a href="#" class="mobile-link" (click)="navigateTo('sellers', $event)">Start Selling</a>
+    <a href="#" class="mobile-link" (click)="navigateTo('about', $event)">About</a>
     <div class="mobile-divider"></div>
     <a routerLink="/login" class="mobile-link" (click)="closeMenu()">Sign in</a>
     <a routerLink="/register" class="mobile-cta" (click)="closeMenu()">Start Selling →</a>

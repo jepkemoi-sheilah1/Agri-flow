@@ -1,6 +1,10 @@
 /* ── Global resets for this page ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+section[id] {
+  scroll-margin-top: 90px;
+}
+
 /* ── Hero ── */
 .hero {
   min-height: 100vh;
@@ -225,6 +229,45 @@
   font-weight: 700;
   color: #1A2E1A;
   line-height: 1.25;
+}
+
+/* ── Browse Products ── */
+.product-showcase {
+  background: #fff;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  background: #F5F0E8;
+  border: 1px solid rgba(45, 106, 45, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 6px 20px rgba(26, 46, 26, 0.06);
+}
+
+.product-icon {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.product-card h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A2E1A;
+  margin-bottom: 0.5rem;
+}
+
+.product-card p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #4a5568;
+  line-height: 1.6;
 }
 
 /* ── How It Works ── */

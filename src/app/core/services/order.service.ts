@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Endpoints } from '../config/endpoints';
 import {
@@ -30,6 +31,13 @@ export class OrderService {
   getMyOrders(): Observable<OrderResponse[]> {
     return this.http.get<OrderResponse[]>(
       `${environment.orderApiUrl}${Endpoints.order.myOrders}`
+    ).pipe(
+      catchError((error) => {
+        if (error?.status === 404 && error?.error?.message?.toLowerCase().includes('your order list is empty')) {
+          return of([]);
+        }
+        return throwError(() => error);
+      })
     );
   }
 
