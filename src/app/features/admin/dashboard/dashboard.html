@@ -1,18 +1,19 @@
 <app-dashboard-layout>
 
   <div class="welcome-section">
-    <h1>Admin Dashboard</h1>
-    <p>Manage sellers, disputes and platform activity</p>
+    <h1>Welcome, {{ user?.username }} 👋</h1>
+    <p>Manage sellers and platform activity</p>
   </div>
 
+  <!-- Stats -->
   <div class="stats-grid">
-    <mat-card class="stat-card">
+    <mat-card class="stat-card" routerLink="/admin/businesses">
       <mat-card-content>
         <div class="stat-icon orange">
           <mat-icon>pending_actions</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">0</span>
+          <span class="stat-number">{{ pendingCount }}</span>
           <span class="stat-label">Pending Approvals</span>
         </div>
       </mat-card-content>
@@ -20,30 +21,18 @@
 
     <mat-card class="stat-card">
       <mat-card-content>
-        <div class="stat-icon blue">
-          <mat-icon>people</mat-icon>
-        </div>
-        <div class="stat-info">
-          <span class="stat-number">0</span>
-          <span class="stat-label">Total Users</span>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="stat-card">
-      <mat-card-content>
         <div class="stat-icon green">
-          <mat-icon>store</mat-icon>
+          <mat-icon>verified</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">0</span>
-          <span class="stat-label">Active Businesses</span>
+          <span class="stat-number">{{ verifiedCount }}</span>
+          <span class="stat-label">Active Sellers</span>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <!-- Quick actions -->
+  <!-- Quick action -->
   <mat-card class="action-card">
     <mat-card-content>
       <div class="action-inner">
