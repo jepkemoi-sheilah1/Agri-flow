@@ -27,7 +27,7 @@
                 <img [src]="user.profilePicture" [alt]="user.firstName" />
               } @else {
                 <span class="avatar-initials">
-                  {{ user.firstName?.charAt(0) }}{{ user.surName?.charAt(0) }}
+                  {{ user.firstName.charAt(0) }}{{ user.surName.charAt(0) }}
                 </span>
               }
             </div>

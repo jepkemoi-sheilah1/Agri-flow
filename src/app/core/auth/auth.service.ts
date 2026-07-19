@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
@@ -31,11 +31,11 @@ export class AuthService {
     );
   }
 
-  registerBusiness(data: { businessName: string; businessEmail: string; businessPhone: string }): Observable<any> {
-    return this.http.post(
-      `${environment.authApiUrl}${Endpoints.auth.businessRegister}`, data
-    );
-  }
+  //registerBusiness(data: { businessName: string; businessEmail: string; businessPhone: string }): Observable<any> {
+   // return this.http.post(
+      //`${environment.authApiUrl}${Endpoints.auth.businessRegister}`, data
+   // );
+ // }
 
   verifyOtp(payload: { email: string; otp: string }): Observable<any> {
     return this.http.post(
@@ -49,22 +49,44 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(
-      `${environment.authApiUrl}${Endpoints.auth.logout}`,
-      { refreshToken: this.getRefreshToken() }
-    ).pipe(
-      tap(() => {
-        localStorage.removeItem(this.tokenKey);
-        localStorage.removeItem(this.refreshTokenKey);
-        this.router.navigate(['/login']);
-      })
-    );
-  }
+ logout(): Observable<any> {
+  return this.http.post(
+    `${environment.authApiUrl}${Endpoints.auth.logout}`,
+    { refreshToken: this.getRefreshToken() }
+  ).pipe(
+    tap(() => {
+      this.clearTokens();
+      this.router.navigate(['/login']);
+    })
+  );
+}
 
   getProfile(): Observable<any> {
     return this.http.get<any>(
       `${environment.authApiUrl}${Endpoints.auth.me}`
+    );
+  }
+
+  clearTokens(): void {
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+  }
+
+  refreshAccessToken(): Observable<AuthResponse> {
+    const refreshToken = this.getRefreshToken();
+
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    return this.http.post<AuthResponse>(
+      `${environment.authApiUrl}${Endpoints.auth.refresh}`,
+      { refreshToken }
+    ).pipe(
+      tap((response) => {
+        localStorage.setItem(this.tokenKey, response.accessToken);
+        localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+      })
     );
   }
 

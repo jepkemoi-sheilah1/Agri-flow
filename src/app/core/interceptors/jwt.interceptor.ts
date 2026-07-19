@@ -1,23 +1,48 @@
+import { HttpInterceptorFn, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpInterceptorFn } from '@angular/common/http';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { Endpoints } from '../config/endpoints';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
 
   const token = authService.getToken();
+  const authReq = token ? addToken(req, token) : req;
 
-  // If no token, continue request unchanged
-  if (!token) {
-    return next(req);
-  }
+  return next(authReq).pipe(
+    catchError((error) => {
+      if (error instanceof HttpErrorResponse && error.status === 401) {
+        const refreshToken = authService.getRefreshToken();
 
-  // Clone request and add Authorization header- they are cloned since they are immutable 
-  const authReq = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+        if (!refreshToken) {
+          authService.clearTokens();
+          router.navigate(['/login']);
+          return throwError(() => error);
+        }
 
-  return next(authReq);
+        return authService.refreshAccessToken().pipe(
+          switchMap((response) => {
+            const newReq = addToken(req, response.accessToken);
+            return next(newReq);
+          }),
+          catchError((refreshError) => {
+            authService.clearTokens();
+            router.navigate(['/login']);
+            return throwError(() => refreshError);
+          })
+        );
+      }
+      return throwError(() => error);
+    })
+  );
 };
+
+function addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
+  return req.clone({
+    setHeaders: { Authorization: `Bearer ${token}` }
+  });
+}

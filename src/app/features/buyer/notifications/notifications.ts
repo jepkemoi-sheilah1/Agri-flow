@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -12,6 +12,7 @@ import { NotificationService, NotificationResponse } from '../../../core/service
   selector: 'app-notifications',
   standalone: true,
   imports: [
+    CommonModule,
     DatePipe,
     DashboardLayout,
     MatCardModule,
