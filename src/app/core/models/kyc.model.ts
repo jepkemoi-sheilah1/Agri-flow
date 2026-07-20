@@ -17,9 +17,10 @@ export interface BusinessResponse {
   businessName: string;
   businessEmail: string;
   businessPhone: string;
+  businessType: string;       // ← new
   approvalStatus: string;
   businessProfile?: string;
-  county: string;
+  county: string;             // ← new
   joinDate: Date;
 }
 
@@ -28,5 +29,6 @@ export interface RegisterBusinessRequest {
   businessEmail: string;
   businessPhone: string;
   county: string;
+  businessType: 'FARM' | 'ENTERPRISE';   
   businessProfile?: string;
 }

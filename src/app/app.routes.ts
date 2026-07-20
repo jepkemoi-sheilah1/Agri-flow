@@ -46,28 +46,28 @@ export const routes: Routes = [
   {
     path: 'buyer',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
   {
     path: 'buyer/feed',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/product-feed/product-feed')
       .then(m => m.ProductFeed)
   },
   {
     path: 'buyer/cart',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/cart/cart')
       .then(m => m.Cart)
   },
   {
     path: 'buyer/checkout',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/buyer/checkout/checkout')
       .then(m => m.Checkout)
   },
@@ -101,12 +101,24 @@ export const routes: Routes = [
     loadComponent: () => import('./features/buyer/profile/profile')
       .then(m => m.Profile)
   },
+  {
+    path: 'buyer/my-payments',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/buyer/my-payments/my-payments')
+      .then(m => m.MyPayments)
+  },
+  {
+    path: 'buyer/notifications',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/buyer/notifications/notifications')
+      .then(m => m.Notifications)
+  },
 
   // seller
   {
     path: 'seller',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/dashboard/dashboard')
       .then(m => m.Dashboard)
   },
@@ -119,7 +131,7 @@ export const routes: Routes = [
   {
     path: 'seller/create-product',
     canActivate: [authGuard, roleGuard],
-    data: { roles: [Role.FARMER, Role.ADMIN, Role.SUPER_ADMIN] },
+    data: { roles: [Role.FARMER, Role.BUYER, Role.ADMIN, Role.SUPER_ADMIN] },
     loadComponent: () => import('./features/seller/create-product/create-product')
       .then(m => m.CreateProduct)
   },
@@ -179,20 +191,7 @@ export const routes: Routes = [
     loadComponent: () => import('./features/admin/business-approvals/business-approvals')
       .then(m => m.BusinessApprovals)
   },
-{
-  path: 'buyer/my-payments',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/my-payments/my-payments')
-    .then(m => m.MyPayments)
-},
-  {
-  path: 'buyer/notifications',
-  canActivate: [authGuard],
-  loadComponent: () => import('./features/buyer/notifications/notifications')
-    .then(m => m.Notifications)
-},
 
-  
   // fallback
   {
     path: '**',

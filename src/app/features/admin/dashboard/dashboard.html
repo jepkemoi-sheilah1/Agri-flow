@@ -1,19 +1,43 @@
 <app-dashboard-layout>
 
+  <!-- Welcome -->
   <div class="welcome-section">
-    <h1>Welcome, {{ user?.username }} 👋</h1>
-    <p>Manage sellers and platform activity</p>
+    <div>
+      <h1>Welcome, {{ user?.username }} 👋</h1>
+      <p>Manage businesses and approvals</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="loadStats()">
+      <mat-icon>refresh</mat-icon> Refresh
+    </button>
   </div>
+
+  <!-- Alerts -->
+  @if (successMessage) {
+    <div class="alert alert-success">
+      <mat-icon>check_circle</mat-icon> {{ successMessage }}
+    </div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      <mat-icon>error_outline</mat-icon> {{ errorMessage }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="loading">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+  }
 
   <!-- Stats -->
   <div class="stats-grid">
-    <mat-card class="stat-card" routerLink="/admin/businesses">
+    <mat-card class="stat-card">
       <mat-card-content>
         <div class="stat-icon orange">
           <mat-icon>pending_actions</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">{{ pendingCount }}</span>
+          <span class="stat-number">{{ pendingBusinesses.length }}</span>
           <span class="stat-label">Pending Approvals</span>
         </div>
       </mat-card-content>
@@ -25,29 +49,182 @@
           <mat-icon>verified</mat-icon>
         </div>
         <div class="stat-info">
-          <span class="stat-number">{{ verifiedCount }}</span>
+          <span class="stat-number">{{ verifiedBusinesses.length }}</span>
           <span class="stat-label">Active Sellers</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon blue">
+          <mat-icon>business</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ totalBusinesses }}</span>
+          <span class="stat-label">Total Businesses</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon purple">
+          <mat-icon>assignment_late</mat-icon>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ unassignedApprovals.length }}</span>
+          <span class="stat-label">Unassigned Reviews</span>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <!-- Quick action -->
-  <mat-card class="action-card">
-    <mat-card-content>
-      <div class="action-inner">
-        <div class="action-icon">
-          <mat-icon>business</mat-icon>
+  <!-- Tabs -->
+  <mat-tab-group animationDuration="200ms" class="dashboard-tabs">
+
+    <!-- Tab 1: Pending Approvals -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">pending_actions</mat-icon>
+        Pending
+        @if (pendingBusinesses.length > 0) {
+          <span class="tab-badge">{{ pendingBusinesses.length }}</span>
+        }
+      </ng-template>
+
+      @if (pendingBusinesses.length === 0) {
+        <div class="empty-state">
+          <mat-icon>check_circle</mat-icon>
+          <p>No pending approvals</p>
         </div>
-        <div class="action-text">
-          <h3>Business Approvals</h3>
-          <p>Review and approve pending seller registrations</p>
+      } @else {
+        <div class="business-list">
+          @for (biz of pendingBusinesses; track biz.id) {
+            <mat-card class="business-card">
+              <mat-card-content>
+                <div class="business-row">
+                  <div class="business-icon orange">
+                    <mat-icon>storefront</mat-icon>
+                  </div>
+                  <div class="business-info">
+                    <span class="business-name">{{ biz.businessName }}</span>
+                    <span class="business-meta">
+                      {{ biz.businessEmail }} · {{ biz.county }} · {{ biz.businessType }}
+                    </span>
+                    <span class="business-meta">{{ biz.businessPhone }}</span>
+                  </div>
+                  <div class="business-actions">
+                    <button
+                      mat-stroked-button
+                      color="warn"
+                      (click)="rejectBusiness(biz.id)"
+                      [disabled]="rejectingId === biz.id || approvingId === biz.id">
+                      @if (rejectingId === biz.id) {
+                        <mat-spinner diameter="16"></mat-spinner>
+                      } @else {
+                        Reject
+                      }
+                    </button>
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="approveBusiness(biz.id)"
+                      [disabled]="approvingId === biz.id || rejectingId === biz.id">
+                      @if (approvingId === biz.id) {
+                        <mat-spinner diameter="16"></mat-spinner>
+                      } @else {
+                        Approve
+                      }
+                    </button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
         </div>
-        <button mat-flat-button routerLink="/admin/businesses" class="action-btn">
-          Review Now
-        </button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      }
+    </mat-tab>
+
+    <!-- Tab 2: Active Sellers -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">verified</mat-icon>
+        Active Sellers
+      </ng-template>
+
+      @if (verifiedBusinesses.length === 0) {
+        <div class="empty-state">
+          <mat-icon>storefront</mat-icon>
+          <p>No verified sellers yet</p>
+        </div>
+      } @else {
+        <div class="business-list">
+          @for (biz of verifiedBusinesses; track biz.id) {
+            <mat-card class="business-card">
+              <mat-card-content>
+                <div class="business-row">
+                  <div class="business-icon green">
+                    <mat-icon>storefront</mat-icon>
+                  </div>
+                  <div class="business-info">
+                    <span class="business-name">{{ biz.businessName }}</span>
+                    <span class="business-meta">
+                      {{ biz.businessEmail }} · {{ biz.county }} · {{ biz.businessType }}
+                    </span>
+                  </div>
+                  <span class="badge-approved">VERIFIED</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      }
+    </mat-tab>
+
+    <!-- Tab 3: Unassigned Reviews -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">assignment_late</mat-icon>
+        Unassigned
+        @if (unassignedApprovals.length > 0) {
+          <span class="tab-badge">{{ unassignedApprovals.length }}</span>
+        }
+      </ng-template>
+
+      @if (unassignedApprovals.length === 0) {
+        <div class="empty-state">
+          <mat-icon>assignment_turned_in</mat-icon>
+          <p>No unassigned reviews</p>
+        </div>
+      } @else {
+        <div class="business-list">
+          @for (item of unassignedApprovals; track item.id) {
+            <mat-card class="business-card">
+              <mat-card-content>
+                <div class="business-row">
+                  <div class="business-icon purple">
+                    <mat-icon>assignment</mat-icon>
+                  </div>
+                  <div class="business-info">
+                    <span class="business-name">
+                      {{ item.businessResponse?.businessName }}
+                    </span>
+                    <span class="business-meta">
+                      {{ item.businessResponse?.county }} ·
+                      {{ item.businessResponse?.businessType }}
+                    </span>
+                    <span class="business-meta">Status: {{ item.status }}</span>
+                  </div>
+                  <span class="badge-pending">UNASSIGNED</span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      }
+    </mat-tab>
+
+  </mat-tab-group>
 
 </app-dashboard-layout>

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,7 @@ import { AddToCartRequest } from '../../../core/models/cart.model';
   selector: 'app-product-feed',
   standalone: true,
   imports: [
-    CommonModule,
+    DecimalPipe,
     FormsModule,
     DashboardLayout,
     MatCardModule,
@@ -36,14 +36,13 @@ export class ProductFeed implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private cartService = inject(CartService);
   private ratingService = inject(RatingService);
-isAddingToCart: { [productId: string]: boolean } = {};
 
+  isAddingToCart: { [productId: string]: boolean } = {};
   products: ProductResponse[] = [];
   filteredProducts: ProductResponse[] = [];
   isLoading = false;
   errorMessage = '';
   searchKeyword = '';
-  // rating UI state
   ratingOpen: { [productId: string]: boolean } = {};
   ratingValue: { [productId: string]: number } = {};
   ratingComment: { [productId: string]: string } = {};
@@ -66,15 +65,14 @@ isAddingToCart: { [productId: string]: boolean } = {};
     const comment = this.ratingComment[productId] ?? '';
     this.isSubmittingRating[productId] = true;
 
-    this.ratingService.submitProductRating({ productId, rating: String(rating), comment }).subscribe({
+    this.ratingService.submitProductRating({ productId, rating, comment }).subscribe({
       next: () => {
-        // refresh product summary
         this.ratingService.getProductRatingSummary(productId).subscribe({
           next: (summary) => {
             const p = this.products.find(x => x.id === productId);
             if (p) {
               p.productRatingSummary = {
-                productId: productId,
+                productId,
                 averageRating: summary.averageRating,
                 totalRatings: summary.totalRatings,
               };

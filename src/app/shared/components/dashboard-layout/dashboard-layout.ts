@@ -45,12 +45,15 @@ export class DashboardLayout {
   ];
 }
 
-    if (role === Role.ADMIN) {
-      return [
-        { label: 'Dashboard',          icon: 'dashboard',       route: '/admin' },
-        { label: 'Pending Businesses', icon: 'pending_actions', route: '/admin/businesses' },
-      ];
-    }
+   if (role === Role.SUPER_ADMIN) {
+  return [
+    { label: 'Dashboard',          icon: 'dashboard',          route: '/super-admin' },
+    { label: 'Business Approvals', icon: 'pending_actions',    route: '/super-admin/businesses' },
+    { label: 'Staff Management',   icon: 'manage_accounts',    route: '/super-admin/staff' },
+    { label: 'Roles',              icon: 'admin_panel_settings', route: '/super-admin/roles' },
+    { label: 'Profile',            icon: 'person',             route: '/buyer/profile' },
+  ];
+}
 
     if (role === Role.SUPER_ADMIN) {
       return [

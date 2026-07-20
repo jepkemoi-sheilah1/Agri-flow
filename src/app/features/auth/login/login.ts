@@ -63,9 +63,6 @@ export class LoginComponent implements OnInit {
           case Role.ADMIN:
             this.router.navigate(['/admin']);
             break;
-          case Role.SELLER:
-            this.router.navigate(['/seller']);
-            break;
           case Role.FARMER:
             if (businessId) {
               this.router.navigate(['/seller']);
@@ -73,6 +70,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/buyer']);
             }
             break;
+          case Role.BUYER:
           default:
             this.router.navigate(['/buyer']);
         }

@@ -38,22 +38,26 @@ export class MyPayments implements OnInit {
   ngOnInit(): void {
     this.loadPayments();
   }
-
-  loadPayments(): void {
-    this.isLoading = true;
-    this.paymentService.getMyPayments().subscribe({
-      next: (payments) => {
-        this.payments = payments;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
+loadPayments(): void {
+  this.isLoading = true;
+  this.paymentService.getMyPayments().subscribe({
+    next: (payments) => {
+      this.payments = payments;
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      this.isLoading = false;
+      // 404 means no payments yet — treat as empty state
+      if (err.status === 404) {
+        this.payments = [];
+      } else {
         this.errorMessage = 'Failed to load payments.';
-        this.isLoading = false;
-        this.cdr.detectChanges();
       }
-    });
-  }
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   getStatusClass(status: string): string {
     const map: Record<string, string> = {

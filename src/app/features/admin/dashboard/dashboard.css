@@ -132,3 +132,166 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: #e8f5e9;
+  color: #2D6A2D;
+  border: 1px solid #c8e6c9;
+}
+
+.alert-error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Tabs */
+.dashboard-tabs {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.tab-icon {
+  font-size: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.tab-badge {
+  background: #e65100;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  margin-left: 6px;
+}
+
+/* Business List */
+.business-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.business-card {
+  border-radius: 10px !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: none !important;
+}
+
+.business-card mat-card-content {
+  padding: 1rem 1.25rem !important;
+}
+
+.business-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.business-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.business-icon.orange { background: #fff3e0; color: #e65100; }
+.business-icon.green  { background: #e8f5e9; color: #2D6A2D; }
+.business-icon.blue   { background: #e3f2fd; color: #1565c0; }
+.business-icon.purple { background: #f3e5f5; color: #6a1b9a; }
+
+.business-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.business-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1A2E1A;
+}
+
+.business-meta {
+  font-size: 0.78rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.business-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Badges */
+.badge-pending {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: #fff3e0;
+  color: #e65100;
+  white-space: nowrap;
+}
+
+.badge-approved {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: #e8f5e9;
+  color: #2D6A2D;
+  white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem;
+  color: #aaa;
+}
+
+.empty-state mat-icon {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+}
+
+/* stat-icon */
+.stat-icon.purple { background: #f3e5f5; color: #6a1b9a; }
