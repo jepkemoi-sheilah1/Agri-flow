@@ -24,11 +24,11 @@ export class DashboardLayout {
   }
 
   logout(): void {
-    this.authService.logout().subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: () => this.router.navigate(['/login'])
-    });
-  }
+  this.authService.logout().subscribe({
+    next: () => this.router.navigate(['/']),
+    error: () => this.router.navigate(['/'])
+  });
+}
 
   get menuItems() {
     const role = this.user?.role as string;
